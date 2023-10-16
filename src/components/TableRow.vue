@@ -1,0 +1,97 @@
+<template>
+  <tr class='text-text tracking-wider py-8 border-b-2 border-primary border-opacity-30'>
+    <td class='text-right px-4 text-gray-500'>{{ id }}</td>
+    <td class='text-left px-4 min-w-max'>{{ name }}</td>
+    <td class='text-right px-4 text-xl tracking-normal'>{{ quantity }}</td>
+    <td class='text-right px-4 tracking-normal'>
+      <ItemPrice :price='price' />
+      <ItemPricePerUnit :price='pricePerUnit' />
+    </td>
+    <td class='text-center px-4 py-2'>
+      <DropdownSelect
+        class='w-64'
+        :items='paymentTypesMap'
+        :selected-value='payment.type'
+        @update:selected-item='setSelectedPaymentType'
+      />
+    </td>
+    <td class='text-center px-4 py-2' v-for='payer in payment.payers' :key='payer.id'>
+      <!--      <EqualShareInput :payer-id='payer.id' :is-paying='payer.isPaying' />-->
+      {{ payer }}
+      ----------
+      {{ payingAmountMap }}
+    </td>
+  </tr>
+</template>
+
+<script setup lang='ts'>
+import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
+import { computed, inject } from 'vue'
+import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
+import { PAYMENT_TYPES } from '@/globals'
+import EqualShareInput from '@/components/inputs/EqualShareInput.vue'
+import ItemPrice from '@/components/ItemPrice.vue'
+import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
+import type { Payer, Payment } from '@/interfaces'
+
+const paymentTypesMap = inject('paymentTypesMap', [])
+
+/* props */
+const props = defineProps({
+  id: { type: Number, required: true },
+  name: { type: String, default: '' },
+  quantity: { type: Number, default: 1 },
+  price: { type: Number, default: 0 },
+  payment: { type: Object as () => Payment, required: true }
+})
+
+/* emits */
+const emit = defineEmits({
+  'update:selected-payment-type'(payload: { itemId: number, newType: PAYMENT_TYPES }) {
+    return payload.newType in PAYMENT_TYPES
+  }
+})
+
+/* computed */
+const pricePerUnit = computed((): number => {
+  return props.price / props.quantity
+})
+
+// gets how much each user would be paying for the current item
+const payingAmountMap = computed((): object => {
+  let result: Record<Payer['id'], number> = {}
+
+  switch (props.payment.type) {
+    // divide for each payer equally
+    case PAYMENT_TYPES.Equal: {
+      result = calculateEqualPayments(props.price, props.payment.payers)
+      break
+    }
+
+    // divide for each payer by the quantity they are paying for
+    case PAYMENT_TYPES.Quantity: {
+      result = calculateQuantityPayments(pricePerUnit.value, props.payment.payers)
+      break
+    }
+
+    // divide for each payer by the percentage of the total price they are paying for
+    case PAYMENT_TYPES.Percentage: {
+      result = calculatePercentagePayments(props.price, props.payment.payers)
+      break
+    }
+
+    default:
+      throw new Error(`Unsupported payment type: ${props.payment.type}`)
+  }
+
+  return result
+})
+
+/* methods */
+function setSelectedPaymentType(newValue: PAYMENT_TYPES) {
+  emit('update:selected-payment-type', {
+    newType: newValue,
+    itemId: props.id
+  })
+}
+</script>
