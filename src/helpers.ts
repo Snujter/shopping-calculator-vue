@@ -17,13 +17,13 @@ export function formatPrice(
 
 export const calculateEqualPayments = (
   totalPrice: number,
-  payers: Array<{ id: number, isPaying: boolean }>
+  payers: Array<{ id: number, isEqualPayer: boolean }>
 ): Record<number, number> => {
   const result: Record<number, number> = {}
-  const payersCount = payers.filter(p => p.isPaying).length
+  const payersCount = payers.filter(p => p.isEqualPayer).length
   const pricePerPayer = totalPrice / payersCount
   payers.forEach(payer => {
-    result[payer.id] = payer.isPaying ? pricePerPayer : 0
+    result[payer.id] = payer.isEqualPayer ? pricePerPayer : 0
   })
   return result
 }

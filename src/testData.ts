@@ -9,9 +9,9 @@ export const TEST_ITEMS = [
     payment: {
       type: PAYMENT_TYPES.Equal,
       payers: [
-        { id: 1, isPaying: true, quantity: 0, percentage: 0 },
-        { id: 2, isPaying: true, quantity: 0, percentage: 0 },
-        { id: 3, isPaying: true, quantity: 0, percentage: 0 }
+        { id: 1, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { id: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { id: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
       ]
     }
   },
@@ -23,9 +23,9 @@ export const TEST_ITEMS = [
     payment: {
       type: PAYMENT_TYPES.Equal,
       payers: [
-        { id: 1, isPaying: false, quantity: 0, percentage: 0 },
-        { id: 2, isPaying: true, quantity: 0, percentage: 0 },
-        { id: 3, isPaying: true, quantity: 0, percentage: 0 }
+        { id: 1, isEqualPayer: false, quantity: 0, percentage: 0 },
+        { id: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { id: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
       ]
     }
   }

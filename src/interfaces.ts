@@ -2,7 +2,7 @@ import { PAYMENT_TYPES } from '@/globals'
 
 export interface Payer {
   id: number,
-  isPaying: boolean,
+  isEqualPayer: boolean,
   quantity: number,
   percentage: number,
 }
