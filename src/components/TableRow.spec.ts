@@ -10,7 +10,7 @@ describe('TableRow', () => {
     const wrapper = shallowMount(TableRow, {
       props: {
         id: 1,
-        payment: { type: PAYMENT_TYPES.Equal, payers: [{ id: 1, isPaying: true, quantity: 0, percentage: 0 }] }
+        payment: { type: PAYMENT_TYPES.Equal, payers: [{ id: 1, isEqualPayer: true, quantity: 0, percentage: 0 }] }
       }
     })
 

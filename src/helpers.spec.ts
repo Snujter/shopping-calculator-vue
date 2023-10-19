@@ -16,9 +16,9 @@ describe('Payments Calculation', () => {
   it('should evenly distribute payments among all paying members', () => {
     const totalAmount = 100
     const payers = [
-      { id: 1, isPaying: true },
-      { id: 2, isPaying: true },
-      { id: 3, isPaying: false }
+      { id: 1, isEqualPayer: true },
+      { id: 2, isEqualPayer: true },
+      { id: 3, isEqualPayer: false }
     ]
     const expectedOutput = { 1: 50, 2: 50, 3: 0 }
     expect(calculateEqualPayments(totalAmount, payers)).toEqual(expectedOutput)
