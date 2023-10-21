@@ -26,7 +26,7 @@
         :name='item.name'
         :quantity='item.quantity'
         :price='item.price'
-        :payment='item.payment'
+        :payment-group='item.paymentGroup'
         @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
       />
       </tbody>
@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang='ts'>
+import type { Payer, Item, Payment } from '@/interfaces'
+import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { PAYMENT_TYPES } from '@/globals'
 import { TEST_ITEMS, TEST_PAYERS } from '@/testData'
@@ -42,15 +44,16 @@ import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
 
 /* data */
-const payers = ref(TEST_PAYERS)
-const items = ref(TEST_ITEMS)
+// @TODO - flatten data structure and rename interfaces
+const payers: Ref<Payer[]> = ref(TEST_PAYERS)
+const items: Ref<Item[]> = ref(TEST_ITEMS)
 
 /* methods */
-function setPaymentTypeForItem(payload: { itemId: Number, newType: PAYMENT_TYPES }) {
+function setPaymentTypeForItem(payload: { itemId: Item['id'], newType: PAYMENT_TYPES }) {
   const item = items.value.find(item => item.id === payload.itemId)
   if (!item) {
     return
   }
-  item.payment.type = payload.newType
+  item.paymentGroup.type = payload.newType
 }
 </script>

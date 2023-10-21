@@ -6,26 +6,40 @@ export const TEST_ITEMS = [
     name: 'Some long ass product name man',
     quantity: 2,
     price: 1234567.89,
-    payment: {
+    paymentGroup: {
       type: PAYMENT_TYPES.Equal,
-      payers: [
-        { id: 1, isEqualPayer: true, quantity: 0, percentage: 0 },
-        { id: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
-        { id: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
+      payments: [
+        { payerId: 1, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { payerId: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { payerId: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
       ]
     }
   },
   {
     id: 2,
-    name: 'test',
-    quantity: 2,
+    name: 'quantity test baby',
+    quantity: 3,
     price: 150,
-    payment: {
-      type: PAYMENT_TYPES.Equal,
-      payers: [
-        { id: 1, isEqualPayer: false, quantity: 0, percentage: 0 },
-        { id: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
-        { id: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
+    paymentGroup: {
+      type: PAYMENT_TYPES.Quantity,
+      payments: [
+        { payerId: 1, isEqualPayer: false, quantity: 0, percentage: 0 },
+        { payerId: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { payerId: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
+      ]
+    }
+  },
+  {
+    id: 2,
+    name: 'percentage test with another really super duper long test name please wrap in more than 2 lines I beg of you',
+    quantity: 4,
+    price: 200,
+    paymentGroup: {
+      type: PAYMENT_TYPES.Percentage,
+      payments: [
+        { payerId: 1, isEqualPayer: false, quantity: 0, percentage: 0 },
+        { payerId: 2, isEqualPayer: true, quantity: 0, percentage: 0 },
+        { payerId: 3, isEqualPayer: true, quantity: 0, percentage: 0 }
       ]
     }
   }

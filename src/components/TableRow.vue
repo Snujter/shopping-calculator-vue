@@ -11,7 +11,7 @@
       <DropdownSelect
         class='w-64'
         :items='paymentTypesMap'
-        :selected-value='payment.type'
+        :selected-value='paymentGroup.type'
         @update:selected-item='setSelectedPaymentType'
       />
     </td>
@@ -25,14 +25,13 @@
 </template>
 
 <script setup lang='ts'>
-import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
+import type { Item, Payer, Payment, PaymentGroup } from '@/interfaces'
 import { computed, inject } from 'vue'
-import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
 import { PAYMENT_TYPES } from '@/globals'
-import EqualShareInput from '@/components/inputs/EqualShareInput.vue'
+import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
+import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
-import type { Payer, Payment } from '@/interfaces'
 
 const paymentTypesMap = inject('paymentTypesMap', [])
 
@@ -42,15 +41,13 @@ const props = defineProps({
   name: { type: String, default: '' },
   quantity: { type: Number, default: 1 },
   price: { type: Number, default: 0 },
-  payment: { type: Object as () => Payment, required: true }
+  paymentGroup: { type: Object as () => PaymentGroup, required: true }
 })
 
 /* emits */
-const emit = defineEmits({
-  'update:selected-payment-type'(payload: { itemId: number, newType: PAYMENT_TYPES }) {
-    return payload.newType in PAYMENT_TYPES
-  }
-})
+const emit = defineEmits<{
+  'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
+}>()
 
 /* computed */
 const pricePerUnit = computed((): number => {
@@ -58,30 +55,33 @@ const pricePerUnit = computed((): number => {
 })
 
 // gets how much each user would be paying for the current item
-const payingAmountMap = computed((): object => {
-  let result: Record<Payer['id'], number> = {}
+type PayingAmountType = {
+  [key in Payer['id']]: number;
+}
+const payingAmountMap = computed((): PayingAmountType => {
+  let result: Record<Payment['payerId'], number> = {}
 
-  switch (props.payment.type) {
+  switch (props.paymentGroup.type) {
     // divide for each payer equally
     case PAYMENT_TYPES.Equal: {
-      result = calculateEqualPayments(props.price, props.payment.payers)
+      result = calculateEqualPayments(props.price, props.paymentGroup.payments)
       break
     }
 
     // divide for each payer by the quantity they are paying for
     case PAYMENT_TYPES.Quantity: {
-      result = calculateQuantityPayments(pricePerUnit.value, props.payment.payers)
+      result = calculateQuantityPayments(pricePerUnit.value, props.paymentGroup.payments)
       break
     }
 
     // divide for each payer by the percentage of the total price they are paying for
     case PAYMENT_TYPES.Percentage: {
-      result = calculatePercentagePayments(props.price, props.payment.payers)
+      result = calculatePercentagePayments(props.price, props.paymentGroup.payments)
       break
     }
 
     default:
-      throw new Error(`Unsupported payment type: ${props.payment.type}`)
+      throw new Error(`Unsupported payment type: ${props.paymentGroup.type}`)
   }
 
   return result

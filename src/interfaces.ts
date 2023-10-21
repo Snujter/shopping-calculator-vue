@@ -2,14 +2,19 @@ import { PAYMENT_TYPES } from '@/globals'
 
 export interface Payer {
   id: number,
-  isEqualPayer: boolean,
-  quantity: number,
-  percentage: number,
+  name: string
 }
 
 export interface Payment {
+  payerId: Payer['id'],
+  isEqualPayer: boolean,
+  quantity: number,
+  percentage: number
+}
+
+export interface PaymentGroup {
   type: PAYMENT_TYPES,
-  payers: Array<Payer>
+  payments: Array<Payment>
 }
 
 export interface Item {
@@ -17,5 +22,5 @@ export interface Item {
   name: string,
   quantity: number,
   price: number,
-  payment: Payment,
+  paymentGroup: PaymentGroup
 }
