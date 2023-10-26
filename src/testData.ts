@@ -30,7 +30,7 @@ export const TEST_ITEMS = [
     }
   },
   {
-    id: 2,
+    id: 3,
     name: 'percentage test with another really super duper long test name please wrap in more than 2 lines I beg of you',
     quantity: 4,
     price: 200,
