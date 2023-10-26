@@ -1,5 +1,5 @@
 <template>
-  <div class='text-xs text-gray-500'>
+  <div class='text-xs text-gray-500 tracking-tight'>
     {{ formattedPrice }} per unit
   </div>
 </template>

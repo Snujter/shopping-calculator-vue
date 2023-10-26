@@ -1,36 +1,38 @@
 <template>
-  <main class='m-10'>
-    <table>
-      <thead>
-      <tr>
-        <TableHeader class='text-right'>#</TableHeader>
-        <TableHeader class='text-left'>Name</TableHeader>
-        <TableHeader class='text-right'>Qty</TableHeader>
-        <TableHeader class='text-right'>Price</TableHeader>
-        <TableHeader>Split</TableHeader>
-        <TableHeader
-          v-for='payer in payers'
-          :key='payer.id'
-          class='text-center'
-        >
-          {{ payer.name }}
-        </TableHeader>
-      </tr>
-      </thead>
+  <main class='p-10 w-screen h-screen'>
+    <div class='w-full h-full overflow-auto'>
+      <table class='mx-auto break-words'>
+        <thead>
+        <tr>
+          <TableHeader class='text-right min-w-[4rem] w-[4rem]'>#</TableHeader>
+          <TableHeader class='text-left min-w-[20rem] w-[28rem]'>Name</TableHeader>
+          <TableHeader class='text-right min-w-[5rem] w-[6rem]'>Qty</TableHeader>
+          <TableHeader class='text-right min-w-[12rem] w-[12rem]'>Price</TableHeader>
+          <TableHeader class='min-w-[16rem] w-[16rem]'>Split</TableHeader>
+          <TableHeader
+            v-for='payer in payers'
+            :key='payer.id'
+            class='text-center min-w-[12rem] w-[20rem]'
+          >
+            {{ payer.name }}
+          </TableHeader>
+        </tr>
+        </thead>
 
-      <tbody>
-      <TableRow
-        v-for='item in items'
-        :key='item.id'
-        :id='item.id'
-        :name='item.name'
-        :quantity='item.quantity'
-        :price='item.price'
-        :payment-group='item.paymentGroup'
-        @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
-      />
-      </tbody>
-    </table>
+        <tbody>
+        <TableRow
+          v-for='item in items'
+          :key='item.id'
+          :id='item.id'
+          :name='item.name'
+          :quantity='item.quantity'
+          :price='item.price'
+          :payment-group='item.paymentGroup'
+          @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
+        />
+        </tbody>
+      </table>
+    </div>
   </main>
 </template>
 

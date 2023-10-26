@@ -1,5 +1,5 @@
 <template>
-  <div class='text-xl'>
+  <div class='text-xl tracking-tight'>
     {{ formattedPrice }}
   </div>
 </template>
