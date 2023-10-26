@@ -1,15 +1,14 @@
 <template>
   <tr class='text-text tracking-wider py-8 border-b-2 border-primary border-opacity-30'>
-    <td class='text-right px-4 text-gray-500'>{{ id }}</td>
-    <td class='text-left px-4 min-w-max'>{{ name }}</td>
-    <td class='text-right px-4 text-xl tracking-normal'>{{ quantity }}</td>
-    <td class='text-right px-4 tracking-normal'>
+    <td class='text-right p-4 text-gray-500'>{{ id }}</td>
+    <td class='text-left p-4'>{{ name }}</td>
+    <td class='text-right p-4 text-xl tracking-normal'>{{ quantity }}</td>
+    <td class='text-right p-4 tracking-normal'>
       <ItemPrice :price='price' />
       <ItemPricePerUnit :price='pricePerUnit' />
     </td>
     <td class='text-center px-4 py-2'>
       <DropdownSelect
-        class='w-64'
         :items='paymentTypesMap'
         :selected-value='paymentGroup.type'
         @update:selected-item='setSelectedPaymentType'
