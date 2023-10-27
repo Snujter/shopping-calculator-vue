@@ -14,11 +14,16 @@
         @update:selected-item='setSelectedPaymentType'
       />
     </td>
-    <td class='text-center px-4 py-2' v-for='payer in payment.payers' :key='payer.id'>
-      <!--      <EqualShareInput :payer-id='payer.id' :is-paying='payer.isPaying' />-->
-      {{ payer }}
-      ----------
-      {{ payingAmountMap }}
+    <td
+      v-for='payment in paymentGroup.payments' :key='payment.payerId'
+      class='text-center border-background border-2'
+    >
+      <EqualPay
+        v-if='paymentGroup.type === PAYMENT_TYPES.Equal'
+        :price='payingAmountMap[payment.payerId]'
+        :is-equal-payer='payment.isEqualPayer'
+        @click.prevent='setIsEqualPayer(!payment.isEqualPayer, payment.payerId)'
+      />
     </td>
   </tr>
 </template>
@@ -31,6 +36,7 @@ import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityP
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
+import EqualPay from '@/components/EqualPay.vue'
 
 const paymentTypesMap = inject('paymentTypesMap', [])
 
@@ -46,6 +52,7 @@ const props = defineProps({
 /* emits */
 const emit = defineEmits<{
   'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
+  'update:is-equal-payer': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
 }>()
 
 /* computed */
@@ -91,6 +98,14 @@ function setSelectedPaymentType(newValue: PAYMENT_TYPES) {
   emit('update:selected-payment-type', {
     newType: newValue,
     itemId: props.id
+  })
+}
+
+function setIsEqualPayer(newValue: boolean, payerId: Payment['payerId']) {
+  emit('update:is-equal-payer', {
+    newValue: newValue,
+    itemId: props.id,
+    payerId: payerId,
   })
 }
 </script>
