@@ -29,7 +29,7 @@
         :price='payingAmountMap[payment.payerId]'
         :quantity='payment.quantity'
         :max-quantity='quantity'
-        @update:quantity='(newQuantity) => setPayerQuantity(newQuantity, payment.payerId)'
+        @update:quantity='(newValue) => setPayerQuantity(newValue, payment.payerId)'
       />
     </td>
   </tr>
