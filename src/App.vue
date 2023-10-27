@@ -31,6 +31,7 @@
           @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
           @update:is-equal-payer='(payload) => setIsEqualPayer(payload)'
           @update:payer-quantity='(payload) => setPayerQuantity(payload)'
+          @update:payer-percentage='(payload) => setPayerPercentage(payload)'
         />
         </tbody>
       </table>
@@ -85,5 +86,18 @@ function setPayerQuantity(payload: { itemId: Item['id'], payerId: Payment['payer
     return
   }
   payment.quantity = payload.newValue
+}
+
+function setPayerPercentage(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: number }) {
+  const item = items.value.find(item => item.id === payload.itemId)
+  if (!item) {
+    return
+  }
+
+  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
+  if (!payment) {
+    return
+  }
+  payment.percentage = payload.newValue
 }
 </script>

@@ -31,6 +31,12 @@
         :max-quantity='quantity'
         @update:quantity='(newValue) => setPayerQuantity(newValue, payment.payerId)'
       />
+      <PercentagePay
+        v-else-if='paymentGroup.type === PAYMENT_TYPES.Percentage'
+        :price='payingAmountMap[payment.payerId]'
+        :percentage='payment.percentage'
+        @update:percentage='(newValue) => setPayerPercentage(newValue, payment.payerId)'
+      />
     </td>
   </tr>
 </template>
@@ -45,6 +51,7 @@ import ItemPrice from '@/components/ItemPrice.vue'
 import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
 import EqualPay from '@/components/EqualPay.vue'
 import QuantityPay from '@/components/QuantityPay.vue'
+import PercentagePay from '@/components/PercentagePay.vue'
 
 const paymentTypesMap = inject('paymentTypesMap', [])
 
@@ -62,6 +69,7 @@ const emit = defineEmits<{
   'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
   'update:is-equal-payer': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
   'update:payer-quantity': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
+  'update:payer-percentage': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
 }>()
 
 /* computed */
@@ -120,6 +128,14 @@ function setIsEqualPayer(newValue: boolean, payerId: Payment['payerId']) {
 
 function setPayerQuantity(newValue: number, payerId: Payment['payerId']) {
   emit('update:payer-quantity', {
+    newValue: newValue,
+    itemId: props.id,
+    payerId: payerId,
+  })
+}
+
+function setPayerPercentage(newValue: number, payerId: Payment['payerId']) {
+  emit('update:payer-percentage', {
     newValue: newValue,
     itemId: props.id,
     payerId: payerId,
