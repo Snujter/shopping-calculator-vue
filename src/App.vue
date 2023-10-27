@@ -29,6 +29,7 @@
           :price='item.price'
           :payment-group='item.paymentGroup'
           @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
+          @update:is-equal-payer='(payload) => setIsEqualPayer(payload)'
         />
         </tbody>
       </table>
@@ -57,5 +58,18 @@ function setPaymentTypeForItem(payload: { itemId: Item['id'], newType: PAYMENT_T
     return
   }
   item.paymentGroup.type = payload.newType
+}
+
+function setIsEqualPayer(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: boolean }) {
+  const item = items.value.find(item => item.id === payload.itemId)
+  if (!item) {
+    return
+  }
+
+  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
+  if (!payment) {
+    return
+  }
+  payment.isEqualPayer = payload.newValue
 }
 </script>
