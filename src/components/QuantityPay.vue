@@ -19,7 +19,7 @@ defineProps({
 
 const emit = defineEmits(['update:quantity'])
 
-const handleQuantityChange = (newQuantity: number) => {
-  emit('update:quantity', newQuantity)
+const handleQuantityChange = (newValue: number) => {
+  emit('update:quantity', newValue)
 }
 </script>
