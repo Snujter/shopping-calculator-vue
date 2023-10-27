@@ -40,14 +40,14 @@ describe('DropdownSelect', () => {
     const $toggle = wrapper.find('[data-test="toggle"]')
 
     // items should be hidden before clicking the toggle
-    expect($container.classes()).toContain("grid-rows-[0fr]")
+    expect($container.classes()).toContain('grid-rows-[0fr]')
 
     // click on toggle
     await $toggle.trigger('click')
     await wrapper.vm.$nextTick() // wait for click
 
     // items should be visible
-    expect($container.classes()).toContain("grid-rows-[1fr]")
+    expect($container.classes()).toContain('grid-rows-[1fr]')
   })
 
   it('emits events', async () => {
