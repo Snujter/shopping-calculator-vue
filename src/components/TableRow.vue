@@ -24,6 +24,13 @@
         :is-equal-payer='payment.isEqualPayer'
         @click.prevent='setIsEqualPayer(!payment.isEqualPayer, payment.payerId)'
       />
+      <QuantityPay
+        v-else-if='paymentGroup.type === PAYMENT_TYPES.Quantity'
+        :price='payingAmountMap[payment.payerId]'
+        :quantity='payment.quantity'
+        :max-quantity='quantity'
+        @update:quantity='(newQuantity) => setPayerQuantity(newQuantity, payment.payerId)'
+      />
     </td>
   </tr>
 </template>
@@ -37,6 +44,7 @@ import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
 import EqualPay from '@/components/EqualPay.vue'
+import QuantityPay from '@/components/QuantityPay.vue'
 
 const paymentTypesMap = inject('paymentTypesMap', [])
 
@@ -53,6 +61,7 @@ const props = defineProps({
 const emit = defineEmits<{
   'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
   'update:is-equal-payer': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
+  'update:payer-quantity': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
 }>()
 
 /* computed */
@@ -103,6 +112,14 @@ function setSelectedPaymentType(newValue: PAYMENT_TYPES) {
 
 function setIsEqualPayer(newValue: boolean, payerId: Payment['payerId']) {
   emit('update:is-equal-payer', {
+    newValue: newValue,
+    itemId: props.id,
+    payerId: payerId,
+  })
+}
+
+function setPayerQuantity(newValue: number, payerId: Payment['payerId']) {
+  emit('update:payer-quantity', {
     newValue: newValue,
     itemId: props.id,
     payerId: payerId,
