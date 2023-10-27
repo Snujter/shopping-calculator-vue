@@ -67,7 +67,7 @@ const props = defineProps({
 /* emits */
 const emit = defineEmits<{
   'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
-  'update:is-equal-payer': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
+  'update:payer-is-equal': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
   'update:payer-quantity': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
   'update:payer-percentage': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
 }>()
@@ -119,7 +119,7 @@ function setSelectedPaymentType(newValue: PAYMENT_TYPES) {
 }
 
 function setIsEqualPayer(newValue: boolean, payerId: Payment['payerId']) {
-  emit('update:is-equal-payer', {
+  emit('update:payer-is-equal', {
     newValue: newValue,
     itemId: props.id,
     payerId: payerId,
