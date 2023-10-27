@@ -30,6 +30,7 @@
           :payment-group='item.paymentGroup'
           @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
           @update:is-equal-payer='(payload) => setIsEqualPayer(payload)'
+          @update:payer-quantity='(payload) => setPayerQuantity(payload)'
         />
         </tbody>
       </table>
@@ -71,5 +72,18 @@ function setIsEqualPayer(payload: { itemId: Item['id'], payerId: Payment['payerI
     return
   }
   payment.isEqualPayer = payload.newValue
+}
+
+function setPayerQuantity(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: number }) {
+  const item = items.value.find(item => item.id === payload.itemId)
+  if (!item) {
+    return
+  }
+
+  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
+  if (!payment) {
+    return
+  }
+  payment.quantity = payload.newValue
 }
 </script>
