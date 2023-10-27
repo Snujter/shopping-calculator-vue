@@ -29,7 +29,7 @@
           :price='item.price'
           :payment-group='item.paymentGroup'
           @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
-          @update:is-equal-payer='(payload) => setIsEqualPayer(payload)'
+          @update:payer-is-equal='(payload) => setIsEqualPayer(payload)'
           @update:payer-quantity='(payload) => setPayerQuantity(payload)'
           @update:payer-percentage='(payload) => setPayerPercentage(payload)'
         />
