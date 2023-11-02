@@ -11,7 +11,13 @@
       <DropdownSelect
         :items='paymentTypesMap'
         :selected-value='paymentGroup.type'
-        @update:selected-item='setSelectedPaymentType'
+        @update:selected-item='(newType) => store.commit(
+          MutationTypes.UPDATE_PAYMENT_TYPE,
+  {
+            itemId: id,
+            value: newType,
+          }
+        )'
       />
     </td>
     <td
@@ -20,40 +26,64 @@
     >
       <EqualPay
         v-if='paymentGroup.type === PAYMENT_TYPES.Equal'
-        :price='payingAmountMap[payment.payerId]'
+        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
         :is-equal-payer='payment.isEqualPayer'
-        @click.prevent='setIsEqualPayer(!payment.isEqualPayer, payment.payerId)'
+        @click.prevent='store.commit(
+          MutationTypes.UPDATE_PAYER_IS_EQUAL,
+          {
+            itemId: id,
+            payerId: payment.payerId,
+            value: !payment.isEqualPayer,
+          }
+        )'
       />
       <QuantityPay
         v-else-if='paymentGroup.type === PAYMENT_TYPES.Quantity'
-        :price='payingAmountMap[payment.payerId]'
+        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
         :quantity='payment.quantity'
         :max-quantity='quantity'
-        @update:quantity='(newValue) => setPayerQuantity(newValue, payment.payerId)'
+        @update:quantity='(newValue) => store.commit(
+          MutationTypes.UPDATE_PAYER_QUANTITY,
+          {
+            itemId: id,
+            payerId: payment.payerId,
+            value: newValue,
+          }
+        )'
       />
       <PercentagePay
         v-else-if='paymentGroup.type === PAYMENT_TYPES.Percentage'
-        :price='payingAmountMap[payment.payerId]'
+        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
         :percentage='payment.percentage'
-        @update:percentage='(newValue) => setPayerPercentage(newValue, payment.payerId)'
+        @update:percentage='(newValue) => store.commit(
+          MutationTypes.UPDATE_PAYER_PERCENTAGE,
+          {
+            itemId: id,
+            payerId: payment.payerId,
+            value: newValue,
+          }
+        )'
       />
     </td>
   </tr>
 </template>
 
 <script setup lang='ts'>
-import type { Item, Payer, Payment, PaymentGroup } from '@/interfaces'
+import type { PaymentGroup } from '@/interfaces'
 import { computed, inject } from 'vue'
 import { PAYMENT_TYPES } from '@/globals'
-import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
 import EqualPay from '@/components/EqualPay.vue'
 import QuantityPay from '@/components/QuantityPay.vue'
 import PercentagePay from '@/components/PercentagePay.vue'
+import { useStore } from 'vuex'
+import { MutationTypes } from '@/store/mutations'
 
 const paymentTypesMap = inject('paymentTypesMap', [])
+
+const store = useStore()
 
 /* props */
 const props = defineProps({
@@ -64,81 +94,8 @@ const props = defineProps({
   paymentGroup: { type: Object as () => PaymentGroup, required: true }
 })
 
-/* emits */
-const emit = defineEmits<{
-  'update:selected-payment-type': [payload: { itemId: Item['id'], newType: PAYMENT_TYPES }],
-  'update:payer-is-equal': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: boolean }],
-  'update:payer-quantity': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
-  'update:payer-percentage': [payload: { itemId: Item['id'], payerId: Payer['id'], newValue: number }],
-}>()
-
 /* computed */
 const pricePerUnit = computed((): number => {
   return props.price / props.quantity
 })
-
-// gets how much each user would be paying for the current item
-type PayingAmountType = {
-  [key in Payer['id']]: number;
-}
-const payingAmountMap = computed((): PayingAmountType => {
-  let result: Record<Payment['payerId'], number> = {}
-
-  switch (props.paymentGroup.type) {
-    // divide for each payer equally
-    case PAYMENT_TYPES.Equal: {
-      result = calculateEqualPayments(props.price, props.paymentGroup.payments)
-      break
-    }
-
-    // divide for each payer by the quantity they are paying for
-    case PAYMENT_TYPES.Quantity: {
-      result = calculateQuantityPayments(pricePerUnit.value, props.paymentGroup.payments)
-      break
-    }
-
-    // divide for each payer by the percentage of the total price they are paying for
-    case PAYMENT_TYPES.Percentage: {
-      result = calculatePercentagePayments(props.price, props.paymentGroup.payments)
-      break
-    }
-
-    default:
-      throw new Error(`Unsupported payment type: ${props.paymentGroup.type}`)
-  }
-
-  return result
-})
-
-/* methods */
-function setSelectedPaymentType(newValue: PAYMENT_TYPES) {
-  emit('update:selected-payment-type', {
-    newType: newValue,
-    itemId: props.id
-  })
-}
-
-function setIsEqualPayer(newValue: boolean, payerId: Payment['payerId']) {
-  emit('update:payer-is-equal', {
-    newValue: newValue,
-    itemId: props.id,
-    payerId: payerId,
-  })
-}
-
-function setPayerQuantity(newValue: number, payerId: Payment['payerId']) {
-  emit('update:payer-quantity', {
-    newValue: newValue,
-    itemId: props.id,
-    payerId: payerId,
-  })
-}
-
-function setPayerPercentage(newValue: number, payerId: Payment['payerId']) {
-  emit('update:payer-percentage', {
-    newValue: newValue,
-    itemId: props.id,
-    payerId: payerId,
-  })
-}
 </script>

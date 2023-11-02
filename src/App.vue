@@ -10,7 +10,7 @@
           <TableHeader class='text-right min-w-[12rem] w-[12rem]'>Price</TableHeader>
           <TableHeader class='min-w-[16rem] w-[16rem]'>Split</TableHeader>
           <TableHeader
-            v-for='payer in payers'
+            v-for='payer in store.state.payers'
             :key='payer.id'
             class='text-center min-w-[12rem] w-[20rem]'
           >
@@ -21,17 +21,13 @@
 
         <tbody>
         <TableRow
-          v-for='item in items'
+          v-for='item in store.state.items'
           :key='item.id'
           :id='item.id'
           :name='item.name'
           :quantity='item.quantity'
           :price='item.price'
           :payment-group='item.paymentGroup'
-          @update:selected-payment-type='(payload) => setPaymentTypeForItem(payload)'
-          @update:payer-is-equal='(payload) => setIsEqualPayer(payload)'
-          @update:payer-quantity='(payload) => setPayerQuantity(payload)'
-          @update:payer-percentage='(payload) => setPayerPercentage(payload)'
         />
         </tbody>
       </table>
@@ -40,64 +36,14 @@
 </template>
 
 <script setup lang='ts'>
-import type { Payer, Item, Payment } from '@/interfaces'
-import type { Ref } from 'vue'
-import { ref } from 'vue'
-import { PAYMENT_TYPES } from '@/globals'
+import { useStore } from 'vuex'
 import { TEST_ITEMS, TEST_PAYERS } from '@/testData'
 import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
 
-/* data */
-// @TODO - flatten data structure and rename interfaces
-const payers: Ref<Payer[]> = ref(TEST_PAYERS)
-const items: Ref<Item[]> = ref(TEST_ITEMS)
+const store = useStore()
 
-/* methods */
-function setPaymentTypeForItem(payload: { itemId: Item['id'], newType: PAYMENT_TYPES }) {
-  const item = items.value.find(item => item.id === payload.itemId)
-  if (!item) {
-    return
-  }
-  item.paymentGroup.type = payload.newType
-}
-
-function setIsEqualPayer(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: boolean }) {
-  const item = items.value.find(item => item.id === payload.itemId)
-  if (!item) {
-    return
-  }
-
-  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
-  if (!payment) {
-    return
-  }
-  payment.isEqualPayer = payload.newValue
-}
-
-function setPayerQuantity(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: number }) {
-  const item = items.value.find(item => item.id === payload.itemId)
-  if (!item) {
-    return
-  }
-
-  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
-  if (!payment) {
-    return
-  }
-  payment.quantity = payload.newValue
-}
-
-function setPayerPercentage(payload: { itemId: Item['id'], payerId: Payment['payerId'], newValue: number }) {
-  const item = items.value.find(item => item.id === payload.itemId)
-  if (!item) {
-    return
-  }
-
-  const payment = item.paymentGroup.payments.find(payment => payment.payerId === payload.payerId)
-  if (!payment) {
-    return
-  }
-  payment.percentage = payload.newValue
-}
+// @TODO - remove test data
+store.state.items = TEST_ITEMS
+store.state.payers = TEST_PAYERS
 </script>

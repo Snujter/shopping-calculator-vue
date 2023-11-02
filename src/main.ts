@@ -3,12 +3,16 @@ import './assets/main.css'
 import { createApp, readonly, shallowRef } from 'vue'
 import App from '@/App.vue'
 
+import store from '@/store'
 import { PAYMENT_TYPES } from '@/globals'
 import ShareEqual from '@/components/icons/IconShareEqual.vue'
 import ShareQuantity from '@/components/icons/IconShareQuantity.vue'
 import SharePercentage from '@/components/icons/IconSharePercentage.vue'
 
 const app = createApp(App)
+
+/* vuex store */
+app.use(store)
 
 /* directives */
 app.directive('click-outside', {
