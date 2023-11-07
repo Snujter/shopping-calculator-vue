@@ -1,35 +1,18 @@
 <template>
-  <component
-    :is='containerElement'
-    class='
-      sticky z-10
-      px-4 py-4 tracking-widest font-normal
-      text-text
-    '
-    :class='[
-      [noBackground ? "bg-background" : "bg-gradient-to-br from-primary to-outline"],
-      {
-        "top-0": stickTo === ALIGNMENT.Top,
-        "bottom-0": stickTo === ALIGNMENT.Bottom
-      },
-    ]'
+  <TableFrame
+    :stick-to='ALIGNMENT.Top'
+    container-element='th'
+    :no-background='noBackground'
   >
     <slot />
-  </component>
+  </TableFrame>
 </template>
 
 <script setup lang='ts'>
 import { ALIGNMENT } from '@/globals'
+import TableFrame from '@/components/TableFrame.vue'
 
 defineProps({
-  noBackground: { type: Boolean, default: false },
-  containerElement: { type: String, default: 'th' },
-  stickTo: {
-    type: Number as () => ALIGNMENT,
-    validator: (value: any): boolean => {
-      return value === ALIGNMENT.Top || value === ALIGNMENT.Bottom
-    },
-    default: ALIGNMENT.Top
-  }
+  noBackground: { type: Boolean, default: false }
 })
 </script>
