@@ -29,6 +29,23 @@
           :price='item.price'
           :payment-group='item.paymentGroup'
         />
+        <tr>
+          <TableFooter class='text-right' colspan='3'>
+            Totals
+          </TableFooter>
+          <TableFooter class='text-right' no-background>
+            <ItemPrice :price='store.getters.totalPrice' />
+          </TableFooter>
+          <TableFooter no-background></TableFooter>
+          <TableFooter
+            v-for='payer in store.state.payers'
+            :key='payer.id'
+            class='text-center'
+            no-background
+          >
+            <ItemPrice :price='store.getters.payerTotalPayments[payer.id]' />
+          </TableFooter>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -40,6 +57,8 @@ import { useStore } from 'vuex'
 import { TEST_ITEMS, TEST_PAYERS } from '@/testData'
 import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
+import ItemPrice from '@/components/ItemPrice.vue'
+import TableFooter from '@/components/TableFooter.vue'
 
 const store = useStore()
 
