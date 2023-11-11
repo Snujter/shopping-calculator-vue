@@ -1,5 +1,10 @@
 <template>
-  <main class='p-10 w-screen h-screen'>
+  <AppSidebar :menu-groups='[
+    [
+      {id: 1, icon: IconFileSave, text: "Download CSV", onClick: handleCSVDownloadClick},
+    ],
+  ]'/>
+  <main class='p-10 pl-24 w-screen h-screen'>
     <div class='w-full h-full overflow-auto'>
       <table class='mx-auto break-words'>
         <thead>
@@ -59,10 +64,26 @@ import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import TableFooter from '@/components/TableFooter.vue'
+import { convertToCSV, downloadCSV } from '@/helpers'
+import { computed } from 'vue'
+import IconFileSave from '@/components/icons/IconFileSave.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
 
 const store = useStore()
 
 // @TODO - remove test data
 store.state.items = TEST_ITEMS
 store.state.payers = TEST_PAYERS
+
+/* computed */
+const downloadFilename = computed(() => {
+  return `morrisons-${store.state.deliveryDate}`
+})
+
+/* methods */
+const handleCSVDownloadClick = () => {
+  const data = store.getters.CSVData
+  const CSVstr = convertToCSV(data)
+  downloadCSV(CSVstr, downloadFilename.value)
+}
 </script>
