@@ -16,7 +16,9 @@
           @click='item.onClick'
           class='left-0 flex items-center p-2 hover:bg-accent cursor-pointer overflow-hidden'
         >
-          <component :is='item.icon' class='min-w-fit fill-text' />
+          <div class='mr-2'>
+            <component :is='item.icon' class='w-6 h-6 min-w-fit fill-text' />
+          </div>
           <span class='text ml-2 truncate'>{{ item.text }}</span>
         </li>
       </ul>
