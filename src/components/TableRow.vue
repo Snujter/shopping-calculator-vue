@@ -26,7 +26,7 @@
     >
       <EqualPay
         v-if='paymentGroup.type === PAYMENT_TYPES.Equal'
-        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
+        :price='store.getters.paymentForItemAndPayer(id, payment.payerId)'
         :is-equal-payer='payment.isEqualPayer'
         @click.prevent='store.commit(
           MutationTypes.UPDATE_PAYER_IS_EQUAL,
@@ -39,7 +39,7 @@
       />
       <QuantityPay
         v-else-if='paymentGroup.type === PAYMENT_TYPES.Quantity'
-        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
+        :price='store.getters.paymentForItemAndPayer(id, payment.payerId)'
         :quantity='payment.quantity'
         :max-quantity='quantity'
         @update:quantity='(newValue) => store.commit(
@@ -53,7 +53,7 @@
       />
       <PercentagePay
         v-else-if='paymentGroup.type === PAYMENT_TYPES.Percentage'
-        :price='store.getters.paymentForItemAndUser(id, payment.payerId)'
+        :price='store.getters.paymentForItemAndPayer(id, payment.payerId)'
         :percentage='payment.percentage'
         @update:percentage='(newValue) => store.commit(
           MutationTypes.UPDATE_PAYER_PERCENTAGE,
