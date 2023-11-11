@@ -10,14 +10,7 @@
     <td class='text-center px-4 py-2'>
       <DropdownSelect
         :items='paymentTypesMap'
-        :selected-value='paymentGroup.type'
-        @update:selected-item='(newType) => store.commit(
-          MutationTypes.UPDATE_PAYMENT_TYPE,
-  {
-            itemId: id,
-            value: newType,
-          }
-        )'
+        v-model='paymentGroupType'
       />
     </td>
     <td
@@ -97,5 +90,15 @@ const props = defineProps({
 /* computed */
 const pricePerUnit = computed((): number => {
   return props.price / props.quantity
+})
+const paymentGroupType = computed({
+  get: () => props.paymentGroup.type,
+  set: (value) => store.commit(
+    MutationTypes.UPDATE_PAYMENT_TYPE,
+    {
+      itemId: props.id,
+      value: value,
+    }
+  )
 })
 </script>
