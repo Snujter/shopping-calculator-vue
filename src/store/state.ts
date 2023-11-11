@@ -9,7 +9,7 @@ export interface State {
 const state: State = {
   items: [],
   payers: [],
-  deliveryDate: ""
+  deliveryDate: new Date().toISOString().split('T')[0]
 }
 
 export default state
