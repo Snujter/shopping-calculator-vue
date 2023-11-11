@@ -20,7 +20,7 @@
   </label>
 </template>
 
-<script lang='ts' setup>
+<script setup lang='ts'>
 /* props */
 defineProps({
   isChecked: { type: Boolean, default: false }

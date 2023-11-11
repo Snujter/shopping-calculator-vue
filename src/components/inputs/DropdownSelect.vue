@@ -27,7 +27,7 @@
 
     <!-- dropdown menu -->
     <div
-      class='grid absolute z-10 bg-primary text-left text-text transition-all w-full'
+      class='grid absolute z-20 bg-primary text-left text-text transition-all w-full'
       :class='[isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"]'
       data-test='item-list-container'
     >
@@ -43,8 +43,8 @@
             <component
               v-if='item.icon'
               :is='item.icon'
-              class='rounded-full fill-text bg-outline p-1 mr-4 group-hover:bg-background w-6 h-6'
-              :class='[item.value === selectedItem.value ? "bg-accent" : "bg-outline"]'
+              class='rounded-full fill-text p-1 mr-4 group-hover:bg-background w-6 h-6'
+              :class='[item === selectedItem ? "bg-accent" : "bg-outline"]'
             />
             <!-- item label -->
             <span>{{ item.label }}</span>
