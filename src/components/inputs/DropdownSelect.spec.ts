@@ -23,7 +23,7 @@ describe('DropdownSelect', () => {
   it('has default prop values', () => {
     const wrapper = shallowMount(DropdownSelect, basicMountOptions)
 
-    assert.equal(wrapper.props().selectedValue, 'test_1', 'Default selectedValue is not the value of the first item in props.items')
+    assert.equal(wrapper.props().modelValue, 'test_1', 'Default modelValue is not the value of the first item in props.items')
   })
 
   it('renders all items', () => {
@@ -54,12 +54,12 @@ describe('DropdownSelect', () => {
     const wrapper = shallowMount(DropdownSelect, basicMountOptions)
 
     // events to emit
-    wrapper.vm.$emit('update:selected-item', 'asd')
+    wrapper.vm.$emit('update:modelValue', 'asd')
 
     // wait until emitted
     await wrapper.vm.$nextTick()
 
     // check if emitted values are correct
-    expect(wrapper.emitted('update:selected-item')?.[0]).toStrictEqual(['asd'])
+    expect(wrapper.emitted('update:modelValue')?.[0]).toStrictEqual(['asd'])
   })
 })

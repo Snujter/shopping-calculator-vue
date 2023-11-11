@@ -64,13 +64,13 @@ import IconArrow from '@/components/icons/IconArrow.vue'
 interface DropdownItem {
   value: string | number
   label: string
-  icon: DefineComponent<{}, {}, any>
+  icon?: DefineComponent<{}, {}, any>
 }
 
 /* props */
 const props = defineProps({
   items: { type: Array<DropdownItem>, required: true },
-  selectedValue: {
+  modelValue: {
     type: [String, Number],
     default(rawProps: { items: Array<DropdownItem> }) {
       // value of the first item should be the default
@@ -80,7 +80,7 @@ const props = defineProps({
 })
 
 /* emits */
-const emit = defineEmits(['update:selected-item'])
+const emit = defineEmits(['update:modelValue'])
 
 /* data */
 const isOpen = ref(false)
@@ -93,13 +93,13 @@ const toggleDropdown = (): void => {
   isOpen.value = !isOpen.value
 }
 const handleSelectedItem = (newValue: DropdownItem['value']): true => {
-  emit('update:selected-item', newValue)
+  emit('update:modelValue', newValue)
   closeDropdown()
   return true
 }
 
 /* computed */
 const selectedItem = computed((): DropdownItem => {
-  return props.items.find((item) => item.value === props.selectedValue)
+  return props.items.find((item) => item.value === props.modelValue)
 })
 </script>
