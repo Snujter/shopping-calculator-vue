@@ -99,9 +99,7 @@ const handleSelectedItem = (newValue: DropdownItem['value']): true => {
 }
 
 /* computed */
-const selectedItem = computed(() => {
+const selectedItem = computed((): DropdownItem => {
   return props.items.find((item) => item.value === props.selectedValue)
-    || props.items[0]
-    || {}
 })
 </script>
