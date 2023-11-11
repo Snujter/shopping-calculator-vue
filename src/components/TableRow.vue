@@ -1,5 +1,5 @@
 <template>
-  <tr class='text-text tracking-wider py-8 border-b-2 border-primary border-opacity-30'>
+  <tr class='text-text tracking-wider border-b-2 border-primary border-opacity-30'>
     <td class='text-right p-4 text-gray-500'>{{ id }}</td>
     <td class='text-left p-4'>{{ name }}</td>
     <td class='text-right p-4 text-xl tracking-normal'>{{ quantity }}</td>
@@ -22,7 +22,7 @@
     </td>
     <td
       v-for='payment in paymentGroup.payments' :key='payment.payerId'
-      class='text-center border-background border-2'
+      class='text-center'
     >
       <EqualPay
         v-if='paymentGroup.type === PAYMENT_TYPES.Equal'

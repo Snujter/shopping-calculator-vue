@@ -1,20 +1,23 @@
 <template>
   <button
-    class='flex items-center bg-outline p-2 group'
+    class='flex items-center justify-center p-2 group'
     :disabled='disabled'
-    :class='{"bg-opacity-10 cursor-not-allowed": disabled}'
+    :class='[
+      [disabled ? "cursor-not-allowed" : "from-accent to-outline"],
+      [noBackground ? "" : "bg-gradient-to-br"]
+    ]'
     data-test='button'
   >
     <!-- icon container -->
     <span
-      class='p-1'
       :class='[
         [disabled ? "fill-gray-600" : "fill-text"], /* disabled styles */
+        {"p-1": $slots["leading-icon"]}
       ]'
     >
       <slot name='leading-icon'></slot>
     </span>
-    <span :class='{"px-3": $slots.default}'>
+    <span :class='{"px-2 text-text": $slots.default}'>
       <slot><!-- button text --></slot>
     </span>
   </button>
@@ -24,5 +27,6 @@
 /* props */
 defineProps({
   disabled: { type: Boolean, default: false },
+  noBackground: { type: Boolean, default: false }
 })
 </script>

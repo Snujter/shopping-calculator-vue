@@ -12,7 +12,7 @@
           <TableHeader
             v-for='payer in store.state.payers'
             :key='payer.id'
-            class='text-center min-w-[12rem] w-[20rem]'
+            class='text-center min-w-[16rem] w-[20rem]'
           >
             {{ payer.name }}
           </TableHeader>

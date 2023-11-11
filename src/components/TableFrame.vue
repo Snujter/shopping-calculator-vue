@@ -3,7 +3,7 @@
     :is='containerElement'
     class='
       sticky z-10
-      px-4 py-4 tracking-widest font-normal
+      p-3 tracking-widest font-normal
       text-text
     '
     :class='[
