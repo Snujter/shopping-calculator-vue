@@ -62,7 +62,8 @@ const getters = {
     return result
   },
 
-  paymentForItemAndUser: (state: State, getters) => (itemId, payerId) => {
+  // get specific payment amount for item and payer
+  paymentForItemAndPayer: (state: State, getters) => (itemId, payerId) => {
     const itemPayments = getters.paymentsMatrix[itemId]
 
     if (itemPayments) {
