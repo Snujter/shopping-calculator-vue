@@ -49,3 +49,31 @@ export const calculatePercentagePayments = (
   })
   return result
 }
+
+export const convertToCSV = (objArray: any, delimiter: any = ','): string => {
+  const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
+  let str = ''
+  const headers = Object.keys(array[0] || [])
+  // str += headers.join(delimiter) + '\r\n'
+  for (let i = 0; i < array.length; i++) {
+    let line = ''
+    for (let j = 0; j < headers.length; j++) {
+      if (line !== '') line += delimiter
+      line += `"${array[i][headers[j]]}"`
+    }
+    str += line + '\r\n'
+  }
+  return str
+}
+
+export const downloadCSV = (data, filename) => {
+  const blob = new Blob([data], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.style.display = 'none'
+  a.href = url
+  a.download = `${filename}.csv`
+  document.body.appendChild(a)
+  a.click()
+  window.URL.revokeObjectURL(url)
+}

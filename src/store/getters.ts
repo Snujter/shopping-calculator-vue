@@ -1,7 +1,7 @@
 import type { State } from './state'
-import type { Item, Payer } from '@/interfaces'
+import type { Item, Payer, Payment } from '@/interfaces'
 import { PAYMENT_TYPES } from '@/globals'
-import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
+import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments, formatPrice } from '@/helpers'
 
 const getters = {
   // total price of items
@@ -71,6 +71,47 @@ const getters = {
     }
 
     return 0
+  },
+
+  // get data prepared for CSV download
+  CSVData: (state: State, getters) => {
+    const headers = [
+      "#",
+      "Name",
+      "Quantity",
+      "Price",
+      ...state.payers.map((payer: Payer) => {
+        return payer.name
+      })
+    ]
+
+    const rows = state.items.map((item: Item) => {
+      return [
+        item.id,
+        item.name,
+        item.quantity,
+        formatPrice(item.price),
+        ...item.paymentGroup.payments.map((payment: Payment): number => {
+          return formatPrice(getters.paymentsMatrix[item.id][payment.payerId])
+        })
+      ]
+    })
+
+    const totals = [
+      " ",
+      " ",
+      "TOTALS",
+      formatPrice(getters.totalPrice),
+      ...state.payers.map((payer: Payer) => {
+        return formatPrice(getters.payerTotalPayments[payer.id])
+      })
+    ]
+
+    return [
+      headers,
+      ...rows,
+      totals
+    ]
   }
 }
 
