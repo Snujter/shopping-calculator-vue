@@ -1,12 +1,17 @@
 import type { State } from './state'
 import type { PAYMENT_TYPES } from '@/globals'
 import type { Item, Payer, Payment } from '@/interfaces'
+import { SHOP_TYPES } from '@/globals'
 
 export const enum MutationTypes {
   UPDATE_PAYMENT_TYPE = 'UPDATE_PAYMENT_TYPE',
   UPDATE_PAYER_IS_EQUAL = 'UPDATE_PAYER_IS_EQUAL',
   UPDATE_PAYER_QUANTITY = 'UPDATE_PAYER_QUANTITY',
   UPDATE_PAYER_PERCENTAGE = 'UPDATE_PAYER_PERCENTAGE',
+  SET_ITEMS = 'SET_ITEMS',
+  UPDATE_DELIVERY_DATE = 'UPDATE_DELIVERY_DATE',
+  UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN = 'UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN',
+  UPDATE_SHOP_TYPE = 'UPDATE_SHOP_TYPE',
 }
 
 const mutations = {
@@ -36,7 +41,19 @@ const mutations = {
     if (payment) {
       payment.percentage = payload.value
     }
-  }
+  },
+  [MutationTypes.SET_ITEMS](state: State, newValue: Item[]) {
+    state.items = newValue
+  },
+  [MutationTypes.UPDATE_DELIVERY_DATE](state: State, newValue: string) {
+    state.deliveryDate = newValue
+  },
+  [MutationTypes.UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN](state: State, newValue: boolean) {
+    state.itemsImportModalOpen = newValue
+  },
+  [MutationTypes.UPDATE_SHOP_TYPE](state: State, newValue: SHOP_TYPES) {
+    state.shopType = newValue
+  },
 }
 
 export default mutations

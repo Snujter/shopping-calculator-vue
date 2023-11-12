@@ -3,7 +3,7 @@
     <button
       type='button'
       class='
-        transition-all bg-transparent text-text border-2 p-4 active:border-accent
+        transition-all bg-background text-text border-2 p-4 active:border-accent
         w-full inline-flex items-center
         group
       '

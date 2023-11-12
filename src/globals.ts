@@ -13,3 +13,7 @@ export enum ALIGNMENT {
   Bottom = 3,
   Left = 4,
 }
+
+export enum SHOP_TYPES {
+  Morrisons = 1,
+}
