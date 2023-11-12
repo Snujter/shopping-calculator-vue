@@ -8,6 +8,7 @@ module.exports = {
         background: '#131314',
         text: '#EBE9FC',
         primary: '#2B1B31',
+        "primary-dark": '#1A151C',
         secondary: '#151338',
         outline: '#41294B',
         accent: '#4455DC',

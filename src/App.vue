@@ -1,9 +1,13 @@
 <template>
   <AppSidebar :menu-groups='[
     [
-      {id: 1, icon: IconFileSave, text: "Download CSV", onClick: handleCSVDownloadClick},
+      {id: 1, icon: IconImportItems, text: "Import Items", onClick: handleImportItemsClick},
+    ],
+    [
+      {id: 2, icon: IconFileSave, text: "Download CSV", onClick: handleCSVDownloadClick},
     ],
   ]'/>
+  <ImportItemsModal/>
   <main class='p-10 pl-24 w-screen h-screen'>
     <div class='w-full h-full overflow-auto'>
       <table class='mx-auto break-words'>
@@ -68,6 +72,10 @@ import { convertToCSV, downloadCSV } from '@/helpers'
 import { computed } from 'vue'
 import IconFileSave from '@/components/icons/IconFileSave.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
+import ImportItemsModal from '@/components/ImportItemsModal.vue'
+import IconImportItems from '@/components/icons/IconImportItems.vue'
+import { MutationTypes } from '@/store/mutations'
+import { SHOP_TYPES } from '@/globals'
 
 const store = useStore()
 
@@ -77,7 +85,11 @@ store.state.payers = TEST_PAYERS
 
 /* computed */
 const downloadFilename = computed(() => {
-  return `morrisons-${store.state.deliveryDate}`
+  let shop = ""
+  if (store.state.shopType === SHOP_TYPES.Morrisons) {
+    shop = "morrisons"
+  }
+  return `${shop}-${store.state.deliveryDate}`
 })
 
 /* methods */
@@ -85,5 +97,8 @@ const handleCSVDownloadClick = () => {
   const data = store.getters.CSVData
   const CSVstr = convertToCSV(data)
   downloadCSV(CSVstr, downloadFilename.value)
+}
+const handleImportItemsClick = () => {
+  store.commit(MutationTypes.UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN, true)
 }
 </script>
