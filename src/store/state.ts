@@ -7,6 +7,7 @@ export interface State {
   deliveryDate: String,
   shopType: SHOP_TYPES,
   itemsImportModalOpen: boolean,
+  managePayersModalOpen: boolean,
 }
 
 const state: State = {
@@ -16,7 +17,8 @@ const state: State = {
   // shopping related stuff
   deliveryDate: new Date().toISOString().split('T')[0],
   shopType: SHOP_TYPES.Morrisons,
-  itemsImportModalOpen: false
+  itemsImportModalOpen: false,
+  managePayersModalOpen: false
 }
 
 export default state

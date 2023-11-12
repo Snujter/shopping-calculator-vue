@@ -2,12 +2,14 @@
   <AppSidebar :menu-groups='[
     [
       {id: 1, icon: IconImportItems, text: "Import Items", onClick: handleImportItemsClick},
+      {id: 2, icon: IconManagePayer, text: "Manage Payers", onClick: handleManagePayersClick},
     ],
     [
-      {id: 2, icon: IconFileSave, text: "Download CSV", onClick: handleCSVDownloadClick},
+      {id: 3, icon: IconFileSave, text: "Download CSV", onClick: handleCSVDownloadClick},
     ],
-  ]'/>
-  <ImportItemsModal/>
+  ]' />
+  <ImportItemsModal />
+  <ManagePayersModal />
   <main class='p-10 pl-24 w-screen h-screen'>
     <div class='w-full h-full overflow-auto'>
       <table class='mx-auto break-words'>
@@ -25,10 +27,25 @@
           >
             {{ payer.name }}
           </TableHeader>
+          <TableHeader class='cursor-pointer' @click='handleManagePayersClick'>
+            <IconManagePayer class='fill-text' />
+          </TableHeader>
         </tr>
         </thead>
 
         <tbody>
+        <tr v-if='store.state.items.length == 0' class='text-text'>
+          <td colspan='100%' class='py-4'>
+            <div class='flex justify-center'>
+              <AppButton @click='handleImportItemsClick'>
+                <template #leading-icon>
+                  <IconImportItems />
+                </template>
+                Import items
+              </AppButton>
+            </div>
+          </td>
+        </tr>
         <TableRow
           v-for='item in store.state.items'
           :key='item.id'
@@ -63,7 +80,6 @@
 
 <script setup lang='ts'>
 import { useStore } from 'vuex'
-import { TEST_ITEMS, TEST_PAYERS } from '@/testData'
 import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
@@ -72,22 +88,25 @@ import { convertToCSV, downloadCSV } from '@/helpers'
 import { computed } from 'vue'
 import IconFileSave from '@/components/icons/IconFileSave.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
-import ImportItemsModal from '@/components/ImportItemsModal.vue'
+import ImportItemsModal from '@/components/modals/ImportItemsModal.vue'
 import IconImportItems from '@/components/icons/IconImportItems.vue'
 import { MutationTypes } from '@/store/mutations'
 import { SHOP_TYPES } from '@/globals'
+import AppButton from '@/components/inputs/AppButton.vue'
+import IconManagePayer from '@/components/icons/IconManagePayer.vue'
+import ManagePayersModal from '@/components/modals/ManagePayersModal.vue'
 
 const store = useStore()
 
-// @TODO - remove test data
-store.state.items = TEST_ITEMS
-store.state.payers = TEST_PAYERS
+// // @TODO - remove test data
+// store.state.items = TEST_ITEMS
+// store.state.payers = TEST_PAYERS
 
 /* computed */
 const downloadFilename = computed(() => {
-  let shop = ""
+  let shop = ''
   if (store.state.shopType === SHOP_TYPES.Morrisons) {
-    shop = "morrisons"
+    shop = 'morrisons'
   }
   return `${shop}-${store.state.deliveryDate}`
 })
@@ -100,5 +119,8 @@ const handleCSVDownloadClick = () => {
 }
 const handleImportItemsClick = () => {
   store.commit(MutationTypes.UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN, true)
+}
+const handleManagePayersClick = () => {
+  store.commit(MutationTypes.UPDATE_IS_MANAGE_PAYERS_MODAL_OPEN, true)
 }
 </script>
