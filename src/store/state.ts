@@ -10,9 +10,12 @@ export interface State {
   managePayersModalOpen: boolean,
 }
 
+// get stored payers from localstorage
+const storedPayers = localStorage.getItem('payers')
+
 const state: State = {
   items: [],
-  payers: [],
+  payers: storedPayers ? JSON.parse(storedPayers) : [],
 
   // shopping related stuff
   deliveryDate: new Date().toISOString().split('T')[0],
