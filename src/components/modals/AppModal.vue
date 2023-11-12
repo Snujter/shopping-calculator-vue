@@ -22,9 +22,6 @@
       </section>
       <footer class='flex justify-end'>
         <slot name='footer'>
-          <AppButton @click='closeModal' no-background>
-            Close
-          </AppButton>
         </slot>
       </footer>
     </div>
