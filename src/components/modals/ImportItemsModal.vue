@@ -37,7 +37,7 @@
 <script setup lang='ts'>
 import { useStore } from 'vuex'
 import AppButton from '@/components/inputs/AppButton.vue'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { PAYMENT_TYPES, SHOP_TYPES } from '@/globals'
 import type { Payer, Payment } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'

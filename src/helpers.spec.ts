@@ -76,8 +76,8 @@ describe('convertToCSV', () => {
   })
 
   it('handles an empty array', () => {
-    const objArray = []
-    const expectedResult = ''
+    const objArray: Object = []
+    const expectedResult: string = ''
     expect(convertToCSV(objArray)).toBe(expectedResult)
   })
 

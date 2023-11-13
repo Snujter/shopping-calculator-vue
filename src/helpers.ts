@@ -66,7 +66,7 @@ export const convertToCSV = (objArray: any, delimiter: any = ','): string => {
   return str
 }
 
-export const downloadCSV = (data, filename) => {
+export const downloadCSV = (data: string, filename: string) => {
   const blob = new Blob([data], { type: 'text/csv' })
   const url = window.URL.createObjectURL(blob)
   const a = document.createElement('a')
