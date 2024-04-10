@@ -1,11 +1,11 @@
 <template>
   <AppModal v-model='isModalOpen'>
     <template #header>Payers</template>
-    <FormInputGroup v-for='payer in store.state.payers' :key='payer.id'>
+    <FormInputGroup v-for='payer in payersStore.payers' :key='payer.id'>
       <template #input>
         <div class='flex'>
           <AppInput :value='payer.name' @input='updatePayerName(payer.id, $event.target.value)' />
-          <AppButton @click='store.dispatch(ActionTypes.DELETE_PAYER, payer.id)' no-background>
+          <AppButton @click='deletePayer(payer.id)' no-background>
             <template #leading-icon>
               <IconDelete class='fill-red-900' />
             </template>
@@ -22,31 +22,39 @@
 </template>
 
 <script setup lang='ts'>
-import { useStore } from 'vuex'
 import AppButton from '@/components/inputs/AppButton.vue'
 import { computed } from 'vue'
 import type { Payer } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import AppModal from '@/components/modals/AppModal.vue'
-import { MutationTypes } from '@/store/mutations'
 import AppInput from '@/components/inputs/AppInput.vue'
 import IconManagePayer from '@/components/icons/IconManagePayer.vue'
 import IconDelete from '@/components/icons/IconDelete.vue'
-import { ActionTypes } from '@/store/actions'
+import { usePayersStore } from '@/store/payersStore'
+import { ModalNames, useModalsStore } from '@/store/modalsStore'
+import { useItemsStore } from '@/store/itemsStore'
 
-const store = useStore()
+const modalsStore = useModalsStore()
+const payersStore = usePayersStore()
+const itemsStore = useItemsStore()
 
 /* computed */
 const isModalOpen = computed({
-  get: () => store.state.managePayersModalOpen,
-  set: (value) => store.commit(MutationTypes.UPDATE_IS_MANAGE_PAYERS_MODAL_OPEN, value)
+  get: () => modalsStore.managePayersModal,
+  set: (value) => modalsStore.setModal(ModalNames.ManagePayersModal, value)
 })
 
 /* methods */
-function addNewPayer() {
-  store.dispatch(ActionTypes.ADD_PAYER, { name: '' })
+const addNewPayer = () => {
+  const newId = payersStore.payers.length + 1
+  payersStore.addPayer({ id: newId, name: '' })
+  itemsStore.addPayerToItems(newId)
 }
-function updatePayerName(payerId: Payer['id'], newName: string) {
-  store.commit(MutationTypes.UPDATE_PAYER, { id: payerId, name: newName })
+const deletePayer = (payerId: Payer['id']) => {
+  payersStore.deletePayer(payerId)
+  itemsStore.deletePayerFromItems(payerId)
+}
+const updatePayerName = (payerId: Payer['id'], newName: string) => {
+  payersStore.updatePayer(payerId, { name: newName })
 }
 </script>

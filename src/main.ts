@@ -1,18 +1,19 @@
 import './assets/main.css'
-
+import { createPinia } from 'pinia'
 import { createApp, readonly, shallowRef } from 'vue'
 import App from '@/App.vue'
-
-import store from '@/store'
 import { PAYMENT_TYPES } from '@/globals'
 import ShareEqual from '@/components/icons/IconShareEqual.vue'
 import ShareQuantity from '@/components/icons/IconShareQuantity.vue'
 import SharePercentage from '@/components/icons/IconSharePercentage.vue'
+import { createLocalStoragePlugin } from '@/store/plugins'
 
 const app = createApp(App)
+const pinia = createPinia()
 
-/* vuex store */
-app.use(store)
+/* pinia store */
+pinia.use(createLocalStoragePlugin())
+app.use(pinia)
 
 /* directives */
 app.directive('click-outside', {

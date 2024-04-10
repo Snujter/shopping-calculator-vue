@@ -1,10 +1,10 @@
-import { describe, it, assert, expect, vi } from 'vitest'
+import { describe, it, assert, expect } from 'vitest'
 import {
   formatPrice,
   calculateEqualPayments,
   calculateQuantityPayments,
   calculatePercentagePayments,
-  convertToCSV, downloadCSV
+  convertToCSV
 } from '@/helpers'
 
 describe('formatPrice', () => {

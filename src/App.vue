@@ -21,7 +21,7 @@
           <TableHeader class='text-right min-w-[12rem] w-[12rem]'>Price</TableHeader>
           <TableHeader class='min-w-[16rem] w-[16rem]'>Split</TableHeader>
           <TableHeader
-            v-for='payer in store.state.payers'
+            v-for='payer in payers'
             :key='payer.id'
             class='text-center min-w-[16rem] w-[20rem]'
           >
@@ -34,7 +34,7 @@
         </thead>
 
         <tbody>
-        <tr v-if='store.state.items.length == 0' class='text-text'>
+        <tr v-if='items.length == 0' class='text-text'>
           <td colspan='100%' class='py-4'>
             <div class='flex justify-center'>
               <AppButton @click='handleImportItemsClick'>
@@ -47,7 +47,7 @@
           </td>
         </tr>
         <TableRow
-          v-for='item in store.state.items'
+          v-for='item in items'
           :key='item.id'
           :id='item.id'
           :name='item.name'
@@ -60,16 +60,16 @@
             Totals
           </TableFooter>
           <TableFooter class='text-right' no-background>
-            <ItemPrice :price='store.getters.totalPrice' />
+            <ItemPrice :price='itemsStore.totalPrice' />
           </TableFooter>
           <TableFooter no-background></TableFooter>
           <TableFooter
-            v-for='payer in store.state.payers'
+            v-for='payer in payers'
             :key='payer.id'
             class='text-center'
             no-background
           >
-            <ItemPrice :price='store.getters.payerTotalPayments[payer.id]' />
+            <ItemPrice :price='itemsStore.payerTotalPayments[payer.id] || 0' />
           </TableFooter>
         </tr>
         </tbody>
@@ -79,48 +79,83 @@
 </template>
 
 <script setup lang='ts'>
-import { useStore } from 'vuex'
 import TableHeader from '@/components/TableHeader.vue'
 import TableRow from '@/components/TableRow.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import TableFooter from '@/components/TableFooter.vue'
-import { convertToCSV, downloadCSV } from '@/helpers'
+import { convertToCSV, downloadCSV, formatPrice } from '@/helpers'
 import { computed } from 'vue'
 import IconFileSave from '@/components/icons/IconFileSave.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImportItemsModal from '@/components/modals/ImportItemsModal.vue'
 import IconImportItems from '@/components/icons/IconImportItems.vue'
-import { MutationTypes } from '@/store/mutations'
-import { SHOP_TYPES } from '@/globals'
 import AppButton from '@/components/inputs/AppButton.vue'
 import IconManagePayer from '@/components/icons/IconManagePayer.vue'
 import ManagePayersModal from '@/components/modals/ManagePayersModal.vue'
+import { useCommonStore } from '@/store/commonStore'
+import { useItemsStore } from '@/store/itemsStore'
+import { usePayersStore } from '@/store/payersStore'
+import { ModalNames, useModalsStore } from '@/store/modalsStore'
+import { Item, Payer, Payment } from '@/interfaces'
 
-const store = useStore()
-
-// // @TODO - remove test data
-// store.state.items = TEST_ITEMS
-// store.state.payers = TEST_PAYERS
+/* stores */
+const commonStore = useCommonStore()
+const itemsStore = useItemsStore()
+const payersStore = usePayersStore()
+const modalsStore = useModalsStore()
 
 /* computed */
-const downloadFilename = computed(() => {
-  let shop = ''
-  if (store.state.shopType === SHOP_TYPES.Morrisons) {
-    shop = 'morrisons'
-  }
-  return `${shop}-${store.state.deliveryDate}`
-})
+const downloadFileName = computed(() => commonStore.getCsvDownloadFileName)
+const items = computed(() => itemsStore.items)
+const payers = computed(() => payersStore.payers)
 
 /* methods */
 const handleCSVDownloadClick = () => {
-  const data = store.getters.CSVData
+  const headers = [
+    "#",
+    "Name",
+    "Quantity",
+    "Price",
+    ...payers.value.map((payer: Payer) => {
+      return payer.name
+    })
+  ]
+
+  const rows = items.value.map((item: Item) => {
+    return [
+      item.id,
+      item.name,
+      item.quantity,
+      formatPrice(item.price),
+      ...item.paymentGroup.payments.map((payment: Payment): string => {
+        return formatPrice(itemsStore.paymentsMatrix[item.id][payment.payerId])
+      })
+    ]
+  })
+
+  const totals = [
+    " ",
+    " ",
+    "TOTALS",
+    formatPrice(itemsStore.totalPrice),
+    ...payers.value.map((payer: Payer): string => {
+      return formatPrice(itemsStore.payerTotalPayments[payer.id])
+    })
+  ]
+
+  const data = [
+    headers,
+    ...rows,
+    totals
+  ]
+
   const CSVstr = convertToCSV(data)
-  downloadCSV(CSVstr, downloadFilename.value)
+  downloadCSV(CSVstr, downloadFileName.value)
 }
 const handleImportItemsClick = () => {
-  store.commit(MutationTypes.UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN, true)
+  modalsStore.openModal(ModalNames.ItemsImportModal)
 }
 const handleManagePayersClick = () => {
-  store.commit(MutationTypes.UPDATE_IS_MANAGE_PAYERS_MODAL_OPEN, true)
+  modalsStore.openModal(ModalNames.ManagePayersModal)
 }
 </script>

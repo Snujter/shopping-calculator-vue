@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang='ts'>
-import { useStore } from 'vuex'
 import AppButton from '@/components/inputs/AppButton.vue'
 import { computed, ref } from 'vue'
 import { PAYMENT_TYPES, SHOP_TYPES } from '@/globals'
@@ -43,13 +42,19 @@ import type { Payer, Payment } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
 import AppModal from '@/components/modals/AppModal.vue'
-import { MutationTypes } from '@/store/mutations'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import AppInput from '@/components/inputs/AppInput.vue'
 import SuccessMessage from '@/components/SuccessMessage.vue'
+import { useCommonStore } from '@/store/commonStore'
+import { ModalNames, useModalsStore } from '@/store/modalsStore'
+import { usePayersStore } from '@/store/payersStore'
+import { useItemsStore } from '@/store/itemsStore'
 
-const store = useStore()
+const commonStore = useCommonStore()
+const modalStore = useModalsStore()
+const payersStore = usePayersStore()
+const itemsStore = useItemsStore()
 
 const successMsg = ref('')
 const errorMsg = ref('')
@@ -57,21 +62,21 @@ const itemsText = ref('')
 
 /* computed */
 const deliveryDate = computed({
-  get: () => store.state.deliveryDate,
-  set: (value) => store.commit(MutationTypes.UPDATE_DELIVERY_DATE, value)
+  get: () => commonStore.deliveryDate,
+  set: (value) => commonStore.setDeliveryDate(value)
 })
 const isModalOpen = computed({
-  get: () => store.state.itemsImportModalOpen,
+  get: () => modalStore.itemsImportModal,
   set: (value) => {
     if (value === false) {
       clearMessages()
     }
-    return store.commit(MutationTypes.UPDATE_IS_ITEMS_IMPORT_MODAL_OPEN, value)
+    return modalStore.setModal(ModalNames.ItemsImportModal, value)
   }
 })
 const shopType = computed({
-  get: () => store.state.shopType,
-  set: (value) => store.commit(MutationTypes.UPDATE_SHOP_TYPE, value)
+  get: () => commonStore.shopType,
+  set: (value) => commonStore.setShopType(value)
 })
 
 const setItems = () => {
@@ -104,7 +109,7 @@ const setItems = () => {
     // create default payment group
     const paymentGroup = {
       type: PAYMENT_TYPES.Equal,
-      payments: store.state.payers.map((payer: Payer): Payment => {
+      payments: payersStore.payers.map((payer: Payer): Payment => {
         return {
           payerId: payer.id,
           isEqualPayer: false,
@@ -124,7 +129,7 @@ const setItems = () => {
   })
 
   // overwrite existing items with new ones
-  store.commit(MutationTypes.SET_ITEMS, newItems)
+  itemsStore.setItems(newItems)
 
   successMsg.value = `Imported ${newItems.length} items.`
 }
