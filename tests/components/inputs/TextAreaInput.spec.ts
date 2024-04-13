@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { DOMWrapper, mount } from '@vue/test-utils'
-import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
+import TextAreaInput from '../../../src/components/inputs/TextAreaInput.vue'
 
 describe('TextAreaInput.vue', () => {
   it('has a default value of empty string', () => {

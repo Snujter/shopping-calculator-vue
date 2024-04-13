@@ -2,8 +2,8 @@ import { describe, it, assert, expect } from 'vitest'
 
 import { markRaw } from 'vue'
 import { shallowMount } from '@vue/test-utils'
-import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
-import ShareEqual from '../icons/IconShareEqual.vue'
+import DropdownSelect from '../../../src/components/inputs/DropdownSelect.vue'
+import ShareEqual from '../../../src/components/icons/IconShareEqual.vue'
 
 describe('DropdownSelect', () => {
   const basicMountOptions = {

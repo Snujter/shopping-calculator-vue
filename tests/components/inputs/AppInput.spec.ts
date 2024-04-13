@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { DOMWrapper, mount } from '@vue/test-utils'
-import AppInput from './AppInput.vue'
+import AppInput from '../../../src/components/inputs/AppInput.vue'
 
 describe('AppInput.vue', () => {
   it('has a default value of empty string', () => {

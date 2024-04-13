@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import AppButton from '@/components/inputs/AppButton.vue'
+import AppButton from '../../../src/components/inputs/AppButton.vue'
 
 describe('AppButton.vue', () => {
   it('renders button as disabled when prop is true', () => {

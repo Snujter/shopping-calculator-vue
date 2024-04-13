@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import ItemPrice from '@/components/ItemPrice.vue'
+import ItemPrice from '../../src/components/ItemPrice.vue'
 
 describe('ItemPrice', () => {
   it('renders formatted price', () => {

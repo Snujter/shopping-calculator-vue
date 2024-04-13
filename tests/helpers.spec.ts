@@ -5,7 +5,7 @@ import {
   calculateQuantityPayments,
   calculatePercentagePayments,
   convertToCSV
-} from '@/helpers'
+} from '../src/helpers'
 
 describe('formatPrice', () => {
   it('should format price according to locale', async () => {

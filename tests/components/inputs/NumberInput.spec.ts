@@ -1,7 +1,7 @@
 import { describe, it, expect, assert } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import NumberInput from '@/components/inputs/NumberInput.vue'
+import NumberInput from '../../../src/components/inputs/NumberInput.vue'
 
 describe('NumberInput.vue', () => {
   it('has default prop values', () => {

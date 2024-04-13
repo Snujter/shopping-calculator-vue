@@ -1,7 +1,7 @@
 import { describe, it, expect, assert } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import PercentagePay from '@/components/PercentagePay.vue'
+import PercentagePay from '../../src/components/PercentagePay.vue'
 
 describe('PercentagePay.vue', () => {
   it('has default prop values', () => {

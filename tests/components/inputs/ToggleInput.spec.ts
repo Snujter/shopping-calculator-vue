@@ -1,7 +1,7 @@
 import { describe, it, expect, assert } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import ToggleInput from '@/components/inputs/ToggleInput.vue'
+import ToggleInput from '../../../src/components/inputs/ToggleInput.vue'
 
 describe('ToggleInput.vue', () => {
   it('has default prop values', () => {
