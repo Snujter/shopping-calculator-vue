@@ -3,7 +3,7 @@
     <ToggleInput
       :is-checked='isEqualPayer'
     />
-    <ItemPrice :price='price' :class='{"text-gray-600": price == 0}' />
+    <ItemPrice :price='price' :color='price <= 0 ? "faded" : "default"' />
   </AppButton>
 <!--  <button-->
 <!--    class='p-8 w-full bg-gradient-to-b hover:from-transparent hover:to-outline'-->

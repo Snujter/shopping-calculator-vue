@@ -3,7 +3,7 @@
     class='flex flex-col p-8'
   >
     <NumberInput class='mb-2' :value='quantity' @input='handleQuantityChange' :max='maxQuantity' />
-    <ItemPrice :price='price' :class='{"text-gray-600": price == 0}' />
+    <ItemPrice :price='price' :color='price <= 0 ? "faded" : "default"' />
   </div>
 </template>
 <script setup lang='ts'>

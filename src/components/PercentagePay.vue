@@ -1,7 +1,7 @@
 <template>
   <div class='flex flex-col p-8'>
     <NumberInput class='mb-2' :value='percentage' @input='handlePercentageChange' :max=100 />
-    <ItemPrice :price='price' :class='{"text-gray-600": price == 0}' />
+    <ItemPrice :price='price' :color='price <= 0 ? "faded" : "default"' />
   </div>
 </template>
 

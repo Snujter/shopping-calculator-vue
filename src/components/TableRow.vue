@@ -5,7 +5,9 @@
     <td class='text-right p-4 text-xl tracking-normal'>{{ quantity }}</td>
     <td class='text-right p-4 tracking-normal'>
       <ItemPrice :price='price' />
-      <ItemPricePerUnit :price='pricePerUnit' />
+      <ItemPrice :price='pricePerUnit' font-size='small' color='faded'>
+        <template #suffix>per unit</template>
+      </ItemPrice>
     </td>
     <td class='text-center px-4 py-2'>
       <DropdownSelect
@@ -46,7 +48,6 @@ import { computed, inject } from 'vue'
 import { PAYMENT_TYPES } from '@/globals'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
-import ItemPricePerUnit from '@/components/ItemPricePerUnit.vue'
 import EqualPay from '@/components/EqualPay.vue'
 import QuantityPay from '@/components/QuantityPay.vue'
 import PercentagePay from '@/components/PercentagePay.vue'
