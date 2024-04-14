@@ -1,11 +1,8 @@
 <template>
   <AppModal v-model='isModalOpen'>
     <template #header>Import Items</template>
-    <AppMessage class='mb-4' v-if='errorMsg' variant='error'>
-      {{ errorMsg }}
-    </AppMessage>
-    <AppMessage class='mb-4' v-if='successMsg' variant='success'>
-      {{ successMsg }}
+    <AppMessage v-if='message.text' :variant='message.type' class='mb-4'>
+      {{ message.text }}
     </AppMessage>
     <FormInputGroup>
       <template #label>From</template>
@@ -49,14 +46,15 @@ import { useCommonStore } from '@/store/commonStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
 import { usePayersStore } from '@/store/payersStore'
 import { useItemsStore } from '@/store/itemsStore'
+import useMessage from '@/composables/useMessage'
 
 const commonStore = useCommonStore()
 const modalStore = useModalsStore()
 const payersStore = usePayersStore()
 const itemsStore = useItemsStore()
 
-const successMsg = ref('')
-const errorMsg = ref('')
+const { message, setMessage, resetMessage } = useMessage()
+
 const itemsText = ref('')
 
 /* computed */
@@ -68,7 +66,7 @@ const isModalOpen = computed({
   get: () => modalStore.itemsImportModal,
   set: (value) => {
     if (value === false) {
-      clearMessages()
+      resetMessage()
     }
     return modalStore.setModal(ModalNames.ItemsImportModal, value)
   }
@@ -79,10 +77,10 @@ const shopType = computed({
 })
 
 const setItems = () => {
-  clearMessages()
+  resetMessage()
 
   if (!itemsText.value.length) {
-    errorMsg.value = 'No items found.'
+    setMessage('error', 'Items field can\'t be empty.')
     return
   }
 
@@ -127,10 +125,15 @@ const setItems = () => {
     }
   })
 
+  if (newItems.length === 0) {
+    setMessage('error', 'No items could be parsed.')
+    return
+  }
+
   // overwrite existing items with new ones
   itemsStore.setItems(newItems)
 
-  successMsg.value = `Imported ${newItems.length} items.`
+  setMessage('success', `Imported ${newItems.length} items.`)
 }
 
 const prepareText = (text: string) => {
@@ -138,10 +141,5 @@ const prepareText = (text: string) => {
     .split('\n') // create array of strings
     .map((row: string) => row.trim()) // remove whitespace
     .filter((row: string) => row.length !== 0 && Number.isInteger(parseInt(row.charAt(0)))) // remove empty rows and rows not starting with a number
-}
-
-const clearMessages = () => {
-  errorMsg.value = ''
-  successMsg.value = ''
 }
 </script>
