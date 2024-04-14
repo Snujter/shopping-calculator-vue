@@ -1,12 +1,12 @@
 <template>
   <AppModal v-model='isModalOpen'>
     <template #header>Import Items</template>
-    <ErrorMessage class='mb-4' v-if='errorMsg'>
+    <AppMessage class='mb-4' v-if='errorMsg' variant='error'>
       {{ errorMsg }}
-    </ErrorMessage>
-    <SuccessMessage class='mb-4' v-if='successMsg'>
+    </AppMessage>
+    <AppMessage class='mb-4' v-if='successMsg' variant='success'>
       {{ successMsg }}
-    </SuccessMessage>
+    </AppMessage>
     <FormInputGroup>
       <template #label>From</template>
       <template #input>
@@ -43,9 +43,8 @@ import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
 import AppModal from '@/components/modals/AppModal.vue'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
-import ErrorMessage from '@/components/ErrorMessage.vue'
+import AppMessage from '@/components/AppMessage.vue'
 import AppInput from '@/components/inputs/AppInput.vue'
-import SuccessMessage from '@/components/SuccessMessage.vue'
 import { useCommonStore } from '@/store/commonStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
 import { usePayersStore } from '@/store/payersStore'
