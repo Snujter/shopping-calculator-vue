@@ -26,7 +26,6 @@ export default defineComponent({
   },
   computed: {
     activeStyle() {
-      console.log(variantMap[this.variant])
       return variantMap[this.variant]
     }
   }

@@ -16,7 +16,7 @@
     <FormInputGroup>
       <template #label>Date</template>
       <template #input>
-        <AppInput type='date' v-model='deliveryDate' />
+        <AppInput v-model='deliveryDate' type='date' />
       </template>
     </FormInputGroup>
     <FormInputGroup>
@@ -35,7 +35,7 @@
 import AppButton from '@/components/inputs/AppButton.vue'
 import { computed, ref } from 'vue'
 import { PAYMENT_TYPES, SHOP_TYPES } from '@/globals'
-import type { Payer, Payment } from '@/interfaces'
+import type { Item, Payer, Payment } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
 import AppModal from '@/components/modals/AppModal.vue'
@@ -48,20 +48,19 @@ import { usePayersStore } from '@/store/payersStore'
 import { useItemsStore } from '@/store/itemsStore'
 import useMessage from '@/composables/useMessage'
 
+// global vars
 const commonStore = useCommonStore()
-const modalStore = useModalsStore()
-const payersStore = usePayersStore()
-const itemsStore = useItemsStore()
-
-const { message, setMessage, resetMessage } = useMessage()
-
-const itemsText = ref('')
-
-/* computed */
+const shopType = computed({
+  get: () => commonStore.shopType,
+  set: (value) => commonStore.setShopType(value)
+})
 const deliveryDate = computed({
   get: () => commonStore.deliveryDate,
   set: (value) => commonStore.setDeliveryDate(value)
 })
+
+// handle modal opening / closing
+const modalStore = useModalsStore()
 const isModalOpen = computed({
   get: () => modalStore.itemsImportModal,
   set: (value) => {
@@ -71,31 +70,37 @@ const isModalOpen = computed({
     return modalStore.setModal(ModalNames.ItemsImportModal, value)
   }
 })
-const shopType = computed({
-  get: () => commonStore.shopType,
-  set: (value) => commonStore.setShopType(value)
-})
 
-const setItems = () => {
-  resetMessage()
+// vars to handle parsing plain text to a list of items
+const payersStore = usePayersStore()
+const itemsStore = useItemsStore()
+const { message, setMessage, resetMessage } = useMessage()
 
-  if (!itemsText.value.length) {
-    setMessage('error', 'Items field can\'t be empty.')
-    return
+const itemsText = ref('')
+
+// parse items from morrisons
+const parseMorrisonsItems = (): Item[] => {
+  const prepareText = (text: string) => {
+    return text
+      .split('\n') // create array of strings
+      .map((row: string) => row.trim()) // remove whitespace
+      .filter((row: string) => row.length !== 0 && Number.isInteger(parseInt(row.charAt(0)))) // remove empty rows and rows not starting with a number
   }
 
   // split the string by new lines and trim extra whitespace
   const textArray = prepareText(itemsText.value)
 
-  const newItems = textArray.map((row, i) => {
+  return textArray.map((row, i) => {
     // separate by spaces
     const rowArray = row.split(' ')
 
     // row begins with quantity, remove from rowArray
-    const quantity = parseInt(rowArray.shift())
+    const quantity = parseInt(rowArray.shift() || '')
 
     // and ends with full price of the item, remove from rowArray and get the numbers only
-    const fullPrice = parseInt(rowArray.pop().match(/\d/g).join(''))
+    const lastItem = rowArray.pop()
+    const digits = lastItem?.match(/\d/g)
+    const fullPrice = parseInt(digits?.join('') ?? '0')
 
     // getting numbers only will cause 3.99 to be displayed as 399 so divide by 100
     const price = Math.floor(fullPrice) / 100
@@ -124,6 +129,19 @@ const setItems = () => {
       paymentGroup
     }
   })
+}
+const setItems = () => {
+  resetMessage()
+
+  if (!itemsText.value.length) {
+    setMessage('error', 'Items field can\'t be empty.')
+    return
+  }
+
+  let newItems: Item[] = []
+  if (shopType.value === SHOP_TYPES.Morrisons) {
+    newItems = parseMorrisonsItems()
+  }
 
   if (newItems.length === 0) {
     setMessage('error', 'No items could be parsed.')
@@ -134,12 +152,5 @@ const setItems = () => {
   itemsStore.setItems(newItems)
 
   setMessage('success', `Imported ${newItems.length} items.`)
-}
-
-const prepareText = (text: string) => {
-  return text
-    .split('\n') // create array of strings
-    .map((row: string) => row.trim()) // remove whitespace
-    .filter((row: string) => row.length !== 0 && Number.isInteger(parseInt(row.charAt(0)))) // remove empty rows and rows not starting with a number
 }
 </script>

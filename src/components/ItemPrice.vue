@@ -46,7 +46,7 @@ export default defineComponent({
   },
   computed: {
     activeStyle() {
-      return [colorMap[this.color], fontSizeMap[this.fontSize]].filter(n => n).join(' ')
+      return [colorMap[this.color], fontSizeMap[this.fontSize]]
     },
     formattedPrice() {
       return formatPrice(this.price)

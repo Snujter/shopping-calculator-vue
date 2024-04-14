@@ -5,11 +5,6 @@
     />
     <ItemPrice :price='price' :color='price <= 0 ? "faded" : "default"' />
   </AppButton>
-<!--  <button-->
-<!--    class='p-8 w-full bg-gradient-to-b hover:from-transparent hover:to-outline'-->
-<!--    :class='[price > 0 ? "from-primary to-outline" : ""]'-->
-<!--  >-->
-<!--  </button>-->
 </template>
 
 <script setup lang='ts'>

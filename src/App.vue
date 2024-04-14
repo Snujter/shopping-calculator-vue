@@ -98,19 +98,21 @@ import { usePayersStore } from '@/store/payersStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
 import { Item, Payer, Payment } from '@/interfaces'
 
-/* stores */
+// common stuff cache
 const commonStore = useCommonStore()
-const itemsStore = useItemsStore()
-const payersStore = usePayersStore()
-const modalsStore = useModalsStore()
-
-/* computed */
 const downloadFileName = computed(() => commonStore.getCsvDownloadFileName)
+
+// items cache
+const itemsStore = useItemsStore()
 const items = computed(() => itemsStore.items)
+
+// payers cache
+const payersStore = usePayersStore()
 const payers = computed(() => payersStore.payers)
 
-/* methods */
+// handle downloading item payments CSV
 const handleCSVDownloadClick = () => {
+  // set up CSV headers
   const headers = [
     "#",
     "Name",
@@ -121,6 +123,7 @@ const handleCSVDownloadClick = () => {
     })
   ]
 
+  // set up items and payments
   const rows = items.value.map((item: Item) => {
     return [
       item.id,
@@ -133,6 +136,7 @@ const handleCSVDownloadClick = () => {
     ]
   })
 
+  // set up totals
   const totals = [
     " ",
     " ",
@@ -143,15 +147,20 @@ const handleCSVDownloadClick = () => {
     })
   ]
 
+  // set up full CSV
   const data = [
     headers,
     ...rows,
     totals
   ]
 
+  // download the created file
   const CSVstr = convertToCSV(data)
   downloadCSV(CSVstr, downloadFileName.value)
 }
+
+// handle modals
+const modalsStore = useModalsStore()
 const handleImportItemsClick = () => {
   modalsStore.openModal(ModalNames.ItemsImportModal)
 }

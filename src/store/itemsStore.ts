@@ -16,15 +16,18 @@ export const useItemsStore = defineStore('items', {
     items: []
   }),
   actions: {
+    // sets new items
     setItems(newItems: Item[]) {
       this.items = [...newItems]
     },
+    // update a single item
     updateItem(itemId: Item['id'], payload: Partial<Item>) {
       this.items = this.items.map((item: Item) => (
         item.id === itemId ? { ...item, ...payload } : item
       ))
     },
-    updateItemPaymentGroup(itemId: Item['id'], payload: Partial<PaymentGroup>) {
+    // updates a payment group inside an item
+    _updateItemPaymentGroup(itemId: Item['id'], payload: Partial<PaymentGroup>) {
       const item = this.items.find((item: Item) => item.id === itemId)
       const newPaymentGroup = {
         paymentGroup: {
@@ -35,15 +38,29 @@ export const useItemsStore = defineStore('items', {
 
       this.updateItem(itemId, newPaymentGroup)
     },
-    setPaymentType(itemId: Item['id'], newType: PaymentGroup['type']) {
-      this.updateItemPaymentGroup(itemId, { type: newType })
-    },
-    setPaymentInGroup(itemId: Item['id'], payerId: Payer['id'], updatedPayment: Partial<Payment>) {
+    // updates a payment inside a payment group
+    _setPaymentInGroup(itemId: Item['id'], payerId: Payer['id'], updatedPayment: Partial<Payment>) {
       const item = this.items.find((item: Item) => item.id === itemId)
       const newPayments = item.paymentGroup.payments.map((payment: Payment) => (
         payment.payerId === payerId ? { ...payment, ...updatedPayment } : payment
       ))
-      this.updateItemPaymentGroup(itemId, { payments: newPayments })
+      this._updateItemPaymentGroup(itemId, { payments: newPayments })
+    },
+    // updates the payment type for an item
+    setPaymentType(itemId: Item['id'], newType: PaymentGroup['type']) {
+      this._updateItemPaymentGroup(itemId, { type: newType })
+    },
+    // updates equal payment option for an item payment
+    setPaymentIsEqualPayer(itemId: Item['id'], payerId: Payer['id'], newValue: Payment['isEqualPayer']) {
+      this._setPaymentInGroup(itemId, payerId, { isEqualPayer: newValue })
+    },
+    // updates quantity option for an item payment
+    setPaymentQuantity(itemId: Item['id'], payerId: Payer['id'], newValue: Payment['quantity']) {
+      this._setPaymentInGroup(itemId, payerId, { quantity: newValue })
+    },
+    // updates percentage option for an item payment
+    setPaymentPercentage(itemId: Item['id'], payerId: Payer['id'], newValue: Payment['percentage']) {
+      this._setPaymentInGroup(itemId, payerId, { percentage: newValue })
     },
     addPayerToItems(payerId: Payer['id']) {
       this.items = this.items.map((item: Item) => {

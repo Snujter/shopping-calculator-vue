@@ -34,17 +34,21 @@ import { usePayersStore } from '@/store/payersStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
 import { useItemsStore } from '@/store/itemsStore'
 
+// handle opening /closing modal
 const modalsStore = useModalsStore()
-const payersStore = usePayersStore()
-const itemsStore = useItemsStore()
-
-/* computed */
 const isModalOpen = computed({
   get: () => modalsStore.managePayersModal,
   set: (value) => modalsStore.setModal(ModalNames.ManagePayersModal, value)
 })
 
-/* methods */
+// handle updating payer names
+const payersStore = usePayersStore()
+const updatePayerName = (payerId: Payer['id'], newName: string) => {
+  payersStore.updatePayer(payerId, { name: newName })
+}
+
+// handle adding / deleting payers
+const itemsStore = useItemsStore()
 const addNewPayer = () => {
   const newId = payersStore.payers.length + 1
   payersStore.addPayer({ id: newId, name: '' })
@@ -53,8 +57,5 @@ const addNewPayer = () => {
 const deletePayer = (payerId: Payer['id']) => {
   payersStore.deletePayer(payerId)
   itemsStore.deletePayerFromItems(payerId)
-}
-const updatePayerName = (payerId: Payer['id'], newName: string) => {
-  payersStore.updatePayer(payerId, { name: newName })
 }
 </script>
