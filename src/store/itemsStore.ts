@@ -37,11 +37,6 @@ export const useItemsStore = defineStore('items', {
     },
     setPaymentType(itemId: Item['id'], newType: PaymentGroup['type']) {
       this.updateItemPaymentGroup(itemId, { type: newType })
-      const item = this.items.find((item: Item) => item.id === itemId)
-      const newPayments = item.paymentGroup.payments.map((payment: Payment) => (
-        payment.payerId === payerId ? { ...payment, ...updatedPayment } : payment
-      ))
-      this.updateItemPaymentGroup(itemId, { payments: newPayments })
     },
     setPaymentInGroup(itemId: Item['id'], payerId: Payer['id'], updatedPayment: Partial<Payment>) {
       const item = this.items.find((item: Item) => item.id === itemId)
