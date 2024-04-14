@@ -1,7 +1,7 @@
 import { describe, it, expect, assert } from 'vitest'
 
 import { shallowMount } from '@vue/test-utils'
-import QuantityPay from '../../src/components/QuantityPay.vue'
+import QuantityPay from '../../src/components/paymentTable/QuantityPay.vue'
 
 describe('QuantityPay.vue', () => {
   it('has default prop values', () => {

@@ -10,7 +10,7 @@
 
 <script setup lang='ts'>
 import { ALIGNMENT } from '@/globals'
-import TableFrame from '@/components/TableFrame.vue'
+import TableFrame from '@/components/paymentTable/TableFrame.vue'
 
 defineProps({
   noBackground: { type: Boolean, default: false }

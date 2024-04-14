@@ -79,10 +79,10 @@
 </template>
 
 <script setup lang='ts'>
-import TableHeader from '@/components/TableHeader.vue'
-import TableRow from '@/components/TableRow.vue'
+import TableHeader from '@/components/paymentTable/TableHeader.vue'
+import TableRow from '@/components/paymentTable/TableRow.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
-import TableFooter from '@/components/TableFooter.vue'
+import TableFooter from '@/components/paymentTable/TableFooter.vue'
 import { convertToCSV, downloadCSV, formatPrice } from '@/helpers'
 import { computed } from 'vue'
 import IconFileSave from '@/components/icons/IconFileSave.vue'

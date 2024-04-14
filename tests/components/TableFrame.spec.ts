@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import TableHeader from '../../src/components/TableHeader.vue'
+import TableHeader from '../../src/components/paymentTable/TableHeader.vue'
 
 describe('TableHeader', () => {
   it('renders slot content', () => {
