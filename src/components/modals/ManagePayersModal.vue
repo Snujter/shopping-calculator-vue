@@ -15,7 +15,7 @@
     </FormInputGroup>
     <AppButton @click='addNewPayer' class='mx-auto'>
       <template #leading-icon>
-        <IconManagePayer class='fill-white' />
+        <IconAddPayer class='fill-white' />
       </template>
     </AppButton>
   </AppModal>
@@ -28,7 +28,7 @@ import type { Payer } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import AppModal from '@/components/modals/AppModal.vue'
 import AppInput from '@/components/inputs/AppInput.vue'
-import IconManagePayer from '@/components/icons/IconManagePayer.vue'
+import IconAddPayer from '@/components/icons/IconAddPayer.vue'
 import IconDelete from '@/components/icons/IconDelete.vue'
 import { usePayersStore } from '@/store/payersStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
