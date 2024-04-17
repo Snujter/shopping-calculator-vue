@@ -71,18 +71,16 @@ export const useItemsStore = defineStore('items', {
           percentage: 0
         }
 
-        return {
-          ...item,
-          paymentGroup: {
-            ...item.paymentGroup,
-            payments: [...item.paymentGroup.payments, newPayment]
-          }
-        }
+        this._updateItemPaymentGroup(item.id, { payments: { ...item.paymentGroup.payments, newPayment } })
       })
     },
     deletePayerFromItems(payerId: Payer['id']) {
       this.items.forEach((item: Item) => {
-        item.paymentGroup.payments = item.paymentGroup.payments.filter((payment: Payment) => payment.payerId !== payerId)
+        // filter out payer id from current payments
+        const filteredPayments = item.paymentGroup.payments.filter(
+          (payment: Payment) => payment.payerId !== payerId
+        )
+        this._updateItemPaymentGroup(item.id, { payments: { filteredPayments } })
       })
     }
   },
