@@ -22,14 +22,15 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": [
     "src/**/*.d.ts",
     "src/**/*.ts",
-    "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "types/**/*.d.ts"
   ],
   "files": [],
   "references": [
