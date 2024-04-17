@@ -1,6 +1,6 @@
 import type { Item, Payer, Payment, PaymentGroup } from '@/interfaces'
 import { defineStore } from 'pinia'
-import { PAYMENT_TYPES } from '@/globals'
+import { PaymentTypes } from '@/globals'
 import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
 
 export interface ItemsStateInterface {
@@ -100,13 +100,13 @@ export const useItemsStore = defineStore('items', {
         }
 
         switch (item.paymentGroup.type) {
-          case PAYMENT_TYPES.Equal:
+          case PaymentTypes.EQUAL:
             result[item.id] = calculateEqualPayments(item.price, item.paymentGroup.payments)
             break
-          case PAYMENT_TYPES.Quantity:
+          case PaymentTypes.QUANTITY:
             result[item.id] = calculateQuantityPayments(item.price / item.quantity, item.paymentGroup.payments)
             break
-          case PAYMENT_TYPES.Percentage:
+          case PaymentTypes.PERCENTAGE:
             result[item.id] = calculatePercentagePayments(item.price, item.paymentGroup.payments)
             break
         }

@@ -26,20 +26,20 @@
       class='text-center'
     >
       <EqualPay
-        v-if='paymentGroup.type === PAYMENT_TYPES.Equal'
+        v-if='paymentGroup.type === PaymentTypes.EQUAL'
         :price='itemPayments[payment.payerId]'
         :is-equal-payer='payment.isEqualPayer'
         @click.prevent='() => itemsStore.setPaymentIsEqualPayer(id, payment.payerId, !payment.isEqualPayer)'
       />
       <QuantityPay
-        v-else-if='paymentGroup.type === PAYMENT_TYPES.Quantity'
+        v-else-if='paymentGroup.type === PaymentTypes.QUANTITY'
         :price='itemPayments[payment.payerId]'
         :quantity='payment.quantity'
         :max-quantity='quantity'
         @update:quantity='(newValue) => itemsStore.setPaymentQuantity(id, payment.payerId, newValue)'
       />
       <PercentagePay
-        v-else-if='paymentGroup.type === PAYMENT_TYPES.Percentage'
+        v-else-if='paymentGroup.type === PaymentTypes.PERCENTAGE'
         :price='itemPayments[payment.payerId]'
         :percentage='payment.percentage'
         @update:percentage='(newValue) => itemsStore.setPaymentPercentage(id, payment.payerId, newValue)'
@@ -51,7 +51,7 @@
 <script setup lang='ts'>
 import type { Payer, PaymentGroup } from '@/interfaces'
 import { computed, inject } from 'vue'
-import { PAYMENT_TYPES } from '@/globals'
+import { PaymentTypes } from '@/globals'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import ItemPrice from '@/components/ItemPrice.vue'
 import EqualPay from '@/components/paymentTable/EqualPay.vue'

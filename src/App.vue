@@ -162,9 +162,9 @@ const handleCSVDownloadClick = () => {
 // handle modals
 const modalsStore = useModalsStore()
 const handleImportItemsClick = () => {
-  modalsStore.openModal(ModalNames.ItemsImportModal)
+  modalsStore.openModal(ModalNames.ITEMS_IMPORT_MODAL)
 }
 const handleManagePayersClick = () => {
-  modalsStore.openModal(ModalNames.ManagePayersModal)
+  modalsStore.openModal(ModalNames.MANAGE_PAYERS_MODAL)
 }
 </script>

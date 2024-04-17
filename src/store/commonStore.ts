@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { SHOP_TYPES } from '@/globals'
+import { ShopTypes } from '@/globals'
 
 export const useCommonStore = defineStore('common', {
   state: () => ({
     deliveryDate: '',
-    shopType: SHOP_TYPES.Morrisons
+    shopType: ShopTypes.MORRISONS
   }),
   actions: {
     setDeliveryDate(newDate: string) {
@@ -17,7 +17,7 @@ export const useCommonStore = defineStore('common', {
   getters: {
     getCsvDownloadFileName: function () {
       let shopName = ''
-      if (this.shopType === SHOP_TYPES.Morrisons) {
+      if (this.shopType === ShopTypes.MORRISONS) {
         shopName = 'morrisons'
       }
       return `${shopName}-${this.deliveryDate}`

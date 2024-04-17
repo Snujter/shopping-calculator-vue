@@ -1,19 +1,19 @@
 export const DEFAULT_LOCALE = import.meta.env.VITE_DEFAULT_LOCALE || 'en-US'
 export const DEFAULT_CURRENCY = import.meta.env.VITE_DEFAULT_CURRENCY || 'USD'
 
-export enum PAYMENT_TYPES {
-  Equal = 1,
-  Quantity,
-  Percentage
+export enum PaymentTypes {
+  EQUAL = 1,
+  QUANTITY,
+  PERCENTAGE
 }
 
-export enum ALIGNMENT {
-  Top = 1,
-  Right = 2,
-  Bottom = 3,
-  Left = 4,
+export enum Alignment {
+  TOP = 1,
+  RIGHT = 2,
+  BOTTOM = 3,
+  LEFT = 4,
 }
 
-export enum SHOP_TYPES {
-  Morrisons = 1,
+export enum ShopTypes {
+  MORRISONS = 1,
 }

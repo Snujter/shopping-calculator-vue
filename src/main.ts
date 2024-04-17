@@ -2,7 +2,7 @@ import './assets/main.css'
 import { createPinia } from 'pinia'
 import { createApp, readonly, shallowRef } from 'vue'
 import App from '@/App.vue'
-import { PAYMENT_TYPES } from '@/globals'
+import { PaymentTypes } from '@/globals'
 import ShareEqual from '@/components/icons/IconShareEqual.vue'
 import ShareQuantity from '@/components/icons/IconShareQuantity.vue'
 import SharePercentage from '@/components/icons/IconSharePercentage.vue'
@@ -48,9 +48,9 @@ app.directive('click-outside', {
 
 /* provides */
 app.provide('paymentTypesMap', readonly([
-  { label: 'Equal', value: PAYMENT_TYPES.Equal, icon: shallowRef(ShareEqual) },
-  { label: 'Quantity', value: PAYMENT_TYPES.Quantity, icon: shallowRef(ShareQuantity) },
-  { label: 'Percentage', value: PAYMENT_TYPES.Percentage, icon: shallowRef(SharePercentage) }
+  { label: 'Equal', value: PaymentTypes.EQUAL, icon: shallowRef(ShareEqual) },
+  { label: 'Quantity', value: PaymentTypes.QUANTITY, icon: shallowRef(ShareQuantity) },
+  { label: 'Percentage', value: PaymentTypes.PERCENTAGE, icon: shallowRef(SharePercentage) }
 ]))
 
 app.mount('#app')

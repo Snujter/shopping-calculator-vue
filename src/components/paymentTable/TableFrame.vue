@@ -9,8 +9,8 @@
     :class='[
       [noBackground ? "bg-background" : "bg-gradient-to-br from-primary to-outline"],
       {
-        "top-0": stickTo === ALIGNMENT.Top,
-        "bottom-0": stickTo === ALIGNMENT.Bottom
+        "top-0": stickTo === Alignment.TOP,
+        "bottom-0": stickTo === Alignment.BOTTOM
       },
     ]'
   >
@@ -19,15 +19,15 @@
 </template>
 
 <script setup lang='ts'>
-import { ALIGNMENT } from '@/globals'
+import { Alignment } from '@/globals'
 
 defineProps({
   noBackground: { type: Boolean, default: false },
   containerElement: { type: String, required: true },
   stickTo: {
-    type: Number as () => ALIGNMENT,
+    type: Number as () => Alignment,
     validator: (value: any): boolean => {
-      return value === ALIGNMENT.Top || value === ALIGNMENT.Bottom
+      return value === Alignment.TOP || value === Alignment.BOTTOM
     },
     required: true
   }

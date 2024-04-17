@@ -37,8 +37,8 @@ import { useItemsStore } from '@/store/itemsStore'
 // handle opening /closing modal
 const modalsStore = useModalsStore()
 const isModalOpen = computed({
-  get: () => modalsStore.managePayersModal,
-  set: (value) => modalsStore.setModal(ModalNames.ManagePayersModal, value)
+  get: () => modalsStore.MANAGE_PAYERS_MODAL,
+  set: (value) => modalsStore.setModal(ModalNames.MANAGE_PAYERS_MODAL, value)
 })
 
 // handle updating payer names

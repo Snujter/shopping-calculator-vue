@@ -1,6 +1,6 @@
 <template>
   <TableFrame
-    :stick-to='ALIGNMENT.Top'
+    :stick-to='Alignment.TOP'
     container-element='th'
     :no-background='noBackground'
   >
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ALIGNMENT } from '@/globals'
+import { Alignment } from '@/globals'
 import TableFrame from '@/components/paymentTable/TableFrame.vue'
 
 defineProps({

@@ -1,4 +1,4 @@
-import { PAYMENT_TYPES } from '@/globals'
+import { PaymentTypes } from '@/globals'
 
 export interface Payer {
   id: number,
@@ -13,7 +13,7 @@ export interface Payment {
 }
 
 export interface PaymentGroup {
-  type: PAYMENT_TYPES,
+  type: PaymentTypes,
   payments: Array<Payment>
 }
 

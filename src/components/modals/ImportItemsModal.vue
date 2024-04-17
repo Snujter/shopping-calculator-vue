@@ -8,7 +8,7 @@
       <template #label>From</template>
       <template #input>
         <DropdownSelect
-          :items='[{value: SHOP_TYPES.Morrisons, label: "Morrison&#39;s"}]'
+          :items='[{value: ShopTypes.MORRISONS, label: "Morrison&#39;s"}]'
           v-model='shopType'
         />
       </template>
@@ -34,7 +34,7 @@
 <script setup lang='ts'>
 import AppButton from '@/components/inputs/AppButton.vue'
 import { computed, ref } from 'vue'
-import { PAYMENT_TYPES, SHOP_TYPES } from '@/globals'
+import { PaymentTypes, ShopTypes } from '@/globals'
 import type { Item, Payer, Payment } from '@/interfaces'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
@@ -62,12 +62,12 @@ const deliveryDate = computed({
 // handle modal opening / closing
 const modalStore = useModalsStore()
 const isModalOpen = computed({
-  get: () => modalStore.itemsImportModal,
+  get: () => modalStore.ITEMS_IMPORT_MODAL,
   set: (value) => {
     if (value === false) {
       resetMessage()
     }
-    return modalStore.setModal(ModalNames.ItemsImportModal, value)
+    return modalStore.setModal(ModalNames.ITEMS_IMPORT_MODAL, value)
   }
 })
 
@@ -110,7 +110,7 @@ const parseMorrisonsItems = (): Item[] => {
 
     // create default payment group
     const paymentGroup = {
-      type: PAYMENT_TYPES.Equal,
+      type: PaymentTypes.EQUAL,
       payments: payersStore.payers.map((payer: Payer): Payment => {
         return {
           payerId: payer.id,
@@ -139,7 +139,7 @@ const setItems = () => {
   }
 
   let newItems: Item[] = []
-  if (shopType.value === SHOP_TYPES.Morrisons) {
+  if (shopType.value === ShopTypes.MORRISONS) {
     newItems = parseMorrisonsItems()
   }
 
