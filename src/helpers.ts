@@ -23,7 +23,7 @@ export const formatPrice = (
 // calculates how much each payer has to pay if everyone pays an equal amount
 export const calculateEqualPayments = (
   totalPrice: number,
-  payments: Array<{ payerId: number, isEqualPayer: boolean }>
+  payments: PartialFields<Payment, 'payerId', 'isEqualPayer'>,
 ): Record<number, number> => {
   const result: Record<number, number> = {}
   const payersCount = payments.filter(p => p.isEqualPayer).length
@@ -37,7 +37,7 @@ export const calculateEqualPayments = (
 // calculates how much each payer has to pay if everyone is paying only for a given quantity
 export const calculateQuantityPayments = (
   pricePerUnit: number,
-  payments: Array<{ payerId: number, quantity: number }>
+  payments: PartialFields<Payment, 'payerId', 'quantity'>,
 ): Record<number, number> => {
   const result: Record<number, number> = {}
   payments.forEach(payment => {
@@ -49,7 +49,7 @@ export const calculateQuantityPayments = (
 // calculates how much each payer has to pay if everyone is paying only for a given percentage
 export const calculatePercentagePayments = (
   totalPrice: number,
-  payments: Array<{ payerId: number, percentage: number }>
+  payments: PartialFields<Payment, 'payerId', 'percentage'>,
 ): Record<number, number> => {
   const result: Record<number, number> = {}
   payments.forEach(payment => {
