@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia'
 import { ShopTypes } from '@/globals'
 
+interface State {
+  deliveryDate: string,
+  shopType: ShopTypes
+}
+
 export const useCommonStore = defineStore('common', {
-  state: () => ({
+  state: (): State => ({
     deliveryDate: '',
     shopType: ShopTypes.MORRISONS
   }),
@@ -10,12 +15,12 @@ export const useCommonStore = defineStore('common', {
     setDeliveryDate(newDate: string) {
       this.deliveryDate = newDate
     },
-    setShopType(newType: SHOP_TYPES) {
+    setShopType(newType: ShopTypes) {
       this.shopType = newType
     }
   },
   getters: {
-    getCsvDownloadFileName: function () {
+    getCsvDownloadFileName: function (): string {
       let shopName = ''
       if (this.shopType === ShopTypes.MORRISONS) {
         shopName = 'morrisons'

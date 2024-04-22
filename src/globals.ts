@@ -9,9 +9,9 @@ export enum PaymentTypes {
 
 export enum Alignment {
   TOP = 1,
-  RIGHT = 2,
-  BOTTOM = 3,
-  LEFT = 4,
+  RIGHT,
+  BOTTOM,
+  LEFT,
 }
 
 export enum ShopTypes {

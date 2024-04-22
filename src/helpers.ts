@@ -1,10 +1,15 @@
+/**
+ * Helper functions for various tasks like formatting currency, downloading CSV etc.
+ */
 import { DEFAULT_LOCALE, DEFAULT_CURRENCY } from '@/globals'
+import type { Payment } from '@/interfaces'
 
-export function formatPrice(
+// formats number to currency
+export const formatPrice = (
   amount: number,
   locale: string = DEFAULT_LOCALE,
   currency: string = DEFAULT_CURRENCY
-): string {
+): string => {
   return amount.toLocaleString(
     locale,
     {
@@ -15,6 +20,7 @@ export function formatPrice(
     })
 }
 
+// calculates how much each payer has to pay if everyone pays an equal amount
 export const calculateEqualPayments = (
   totalPrice: number,
   payments: Array<{ payerId: number, isEqualPayer: boolean }>
@@ -28,6 +34,7 @@ export const calculateEqualPayments = (
   return result
 }
 
+// calculates how much each payer has to pay if everyone is paying only for a given quantity
 export const calculateQuantityPayments = (
   pricePerUnit: number,
   payments: Array<{ payerId: number, quantity: number }>
@@ -39,6 +46,7 @@ export const calculateQuantityPayments = (
   return result
 }
 
+// calculates how much each payer has to pay if everyone is paying only for a given percentage
 export const calculatePercentagePayments = (
   totalPrice: number,
   payments: Array<{ payerId: number, percentage: number }>
@@ -50,6 +58,7 @@ export const calculatePercentagePayments = (
   return result
 }
 
+// converts an array or object to CSV
 export const convertToCSV = (objArray: any, delimiter: any = ','): string => {
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
   let str = ''
@@ -66,6 +75,7 @@ export const convertToCSV = (objArray: any, delimiter: any = ','): string => {
   return str
 }
 
+// downloads a CSV
 export const downloadCSV = (data: string, filename: string) => {
   const blob = new Blob([data], { type: 'text/csv' })
   const url = window.URL.createObjectURL(blob)

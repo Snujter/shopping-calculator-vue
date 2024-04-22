@@ -79,24 +79,24 @@
 </template>
 
 <script setup lang='ts'>
-import TableHeader from '@/components/paymentTable/TableHeader.vue'
-import TableRow from '@/components/paymentTable/TableRow.vue'
-import ItemPrice from '@/components/ItemPrice.vue'
-import TableFooter from '@/components/paymentTable/TableFooter.vue'
-import { convertToCSV, downloadCSV, formatPrice } from '@/helpers'
 import { computed } from 'vue'
-import IconFileSave from '@/components/icons/IconFileSave.vue'
-import AppSidebar from '@/components/AppSidebar.vue'
-import ImportItemsModal from '@/components/modals/ImportItemsModal.vue'
-import IconImportItems from '@/components/icons/IconImportItems.vue'
-import AppButton from '@/components/inputs/AppButton.vue'
-import IconManagePayer from '@/components/icons/IconManagePayer.vue'
-import ManagePayersModal from '@/components/modals/ManagePayersModal.vue'
+import { Item, Payer, Payment } from '@/interfaces'
 import { useCommonStore } from '@/store/commonStore'
 import { useItemsStore } from '@/store/itemsStore'
 import { usePayersStore } from '@/store/payersStore'
 import { ModalNames, useModalsStore } from '@/store/modalsStore'
-import { Item, Payer, Payment } from '@/interfaces'
+import { convertToCSV, downloadCSV, formatPrice } from '@/helpers'
+import IconImportItems from '@/components/icons/IconImportItems.vue'
+import IconManagePayer from '@/components/icons/IconManagePayer.vue'
+import IconFileSave from '@/components/icons/IconFileSave.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
+import AppButton from '@/components/inputs/AppButton.vue'
+import ImportItemsModal from '@/components/modals/ImportItemsModal.vue'
+import ManagePayersModal from '@/components/modals/ManagePayersModal.vue'
+import ItemPrice from '@/components/ItemPrice.vue'
+import TableHeader from '@/components/paymentTable/TableHeader.vue'
+import TableRow from '@/components/paymentTable/TableRow.vue'
+import TableFooter from '@/components/paymentTable/TableFooter.vue'
 
 // common stuff cache
 const commonStore = useCommonStore()

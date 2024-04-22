@@ -32,21 +32,21 @@
 </template>
 
 <script setup lang='ts'>
-import AppButton from '@/components/inputs/AppButton.vue'
 import { computed, ref } from 'vue'
-import { PaymentTypes, ShopTypes } from '@/globals'
 import type { Item, Payer, Payment } from '@/interfaces'
+import { PaymentTypes, ShopTypes } from '@/globals'
+import { useCommonStore } from '@/store/commonStore'
+import { ModalNames, useModalsStore } from '@/store/modalsStore'
+import { usePayersStore } from '@/store/payersStore'
+import { useItemsStore } from '@/store/itemsStore'
+import useMessage from '@/composables/useMessage'
+import AppButton from '@/components/inputs/AppButton.vue'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import TextAreaInput from '@/components/inputs/TextAreaInput.vue'
 import AppModal from '@/components/modals/AppModal.vue'
 import DropdownSelect from '@/components/inputs/DropdownSelect.vue'
 import AppMessage from '@/components/AppMessage.vue'
 import AppInput from '@/components/inputs/AppInput.vue'
-import { useCommonStore } from '@/store/commonStore'
-import { ModalNames, useModalsStore } from '@/store/modalsStore'
-import { usePayersStore } from '@/store/payersStore'
-import { useItemsStore } from '@/store/itemsStore'
-import useMessage from '@/composables/useMessage'
 
 // global vars
 const commonStore = useCommonStore()

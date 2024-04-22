@@ -5,8 +5,12 @@ export enum ModalNames {
   MANAGE_PAYERS_MODAL = 'MANAGE_PAYERS_MODAL',
 }
 
+interface State {
+  [ModalNames]: boolean,
+}
+
 export const useModalsStore = defineStore('modals', {
-  state: () => ({
+  state: (): State => ({
     [ModalNames.ITEMS_IMPORT_MODAL]: false,
     [ModalNames.MANAGE_PAYERS_MODAL]: false
   }),

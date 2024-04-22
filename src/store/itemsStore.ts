@@ -3,16 +3,16 @@ import { defineStore } from 'pinia'
 import { PaymentTypes } from '@/globals'
 import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
 
-export interface ItemsStateInterface {
-  items: Item[]
+interface State {
+  items: Item[],
 }
 
-export interface PaymentsMatrixInterface {
+interface PaymentsMatrixInterface {
   [itemId: Item['id']]: { [payerId: Payer['id']]: number }
 }
 
 export const useItemsStore = defineStore('items', {
-  state: (): ItemsStateInterface => ({
+  state: (): State => ({
     items: []
   }),
   actions: {
@@ -63,7 +63,7 @@ export const useItemsStore = defineStore('items', {
       this._setPaymentInGroup(itemId, payerId, { percentage: newValue })
     },
     addPayerToItems(payerId: Payer['id']) {
-      this.items = this.items.map((item: Item) => {
+      this.items.forEach((item: Item) => {
         const newPayment = {
           payerId: payerId,
           isEqualPayer: false,
@@ -86,7 +86,7 @@ export const useItemsStore = defineStore('items', {
   },
   getters: {
     // total price of items
-    totalPrice: (state) => state.items.reduce((a, b) => (a + b['price']), 0),
+    totalPrice: (state): number => state.items.reduce((a, b) => (a + b['price']), 0),
 
     // payment matrix for each item's each payer
     paymentsMatrix: (state): PaymentsMatrixInterface => {

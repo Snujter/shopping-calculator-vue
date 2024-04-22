@@ -30,7 +30,6 @@
 
 <script setup lang='ts'>
 import { ref, watch } from 'vue'
-import AppButton from '@/components/inputs/AppButton.vue'
 
 /* props */
 const props = defineProps({

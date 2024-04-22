@@ -4,6 +4,7 @@ export interface PersistConfig {
   [actionName: string]: string[]
 }
 
+// plugin for saving specific parts of the state of a store to localStorage
 export function createLocalStoragePlugin() {
   return (context: PiniaPluginContext) => {
     const { store, options } = context

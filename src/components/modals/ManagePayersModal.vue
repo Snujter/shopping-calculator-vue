@@ -22,17 +22,17 @@
 </template>
 
 <script setup lang='ts'>
-import AppButton from '@/components/inputs/AppButton.vue'
 import { computed } from 'vue'
 import type { Payer } from '@/interfaces'
+import { usePayersStore } from '@/store/payersStore'
+import { ModalNames, useModalsStore } from '@/store/modalsStore'
+import { useItemsStore } from '@/store/itemsStore'
+import AppButton from '@/components/inputs/AppButton.vue'
 import FormInputGroup from '@/components/inputs/FormInputGroup.vue'
 import AppModal from '@/components/modals/AppModal.vue'
 import AppInput from '@/components/inputs/AppInput.vue'
 import IconAddPayer from '@/components/icons/IconAddPayer.vue'
 import IconDelete from '@/components/icons/IconDelete.vue'
-import { usePayersStore } from '@/store/payersStore'
-import { ModalNames, useModalsStore } from '@/store/modalsStore'
-import { useItemsStore } from '@/store/itemsStore'
 
 // handle opening /closing modal
 const modalsStore = useModalsStore()

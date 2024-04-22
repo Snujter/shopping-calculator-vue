@@ -1,10 +1,13 @@
 import type { Payer } from '@/interfaces'
-import type { PersistConfig } from '@/store/plugins'
 import { defineStore } from 'pinia'
 
+interface State {
+  payers: Payer[],
+}
+
 export const usePayersStore = defineStore('payers', {
-  state: () => ({
-    payers: [] as Payer[]
+  state: (): State => ({
+    payers: []
   }),
   actions: {
     addPayer(payer: Payer) {
@@ -23,5 +26,5 @@ export const usePayersStore = defineStore('payers', {
     addPayer: ['payers'],
     updatePayer: ['payers'],
     deletePayer: ['payers']
-  } as PersistConfig
+  }
 })
