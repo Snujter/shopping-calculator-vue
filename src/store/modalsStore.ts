@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia'
 
 export enum ModalNames {
-  ITEMS_IMPORT_MODAL = 'ITEMS_IMPORT_MODAL',
-  MANAGE_PAYERS_MODAL = 'MANAGE_PAYERS_MODAL',
+  ITEMS_IMPORT = 'ITEMS_IMPORT',
+  MANAGE_PAYERS = 'MANAGE_PAYERS',
 }
 
 interface State {
-  [ModalNames]: boolean,
+  [ModalNames.ITEMS_IMPORT]: boolean,
+  [ModalNames.MANAGE_PAYERS]: boolean,
 }
 
 export const useModalsStore = defineStore('modals', {
   state: (): State => ({
-    [ModalNames.ITEMS_IMPORT_MODAL]: false,
-    [ModalNames.MANAGE_PAYERS_MODAL]: false
+    [ModalNames.ITEMS_IMPORT]: false,
+    [ModalNames.MANAGE_PAYERS]: false
   }),
   actions: {
     setModal(modalName: ModalNames, value: boolean) {

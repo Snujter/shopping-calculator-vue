@@ -62,12 +62,12 @@ const deliveryDate = computed({
 // handle modal opening / closing
 const modalStore = useModalsStore()
 const isModalOpen = computed({
-  get: () => modalStore.ITEMS_IMPORT_MODAL,
+  get: () => modalStore.ITEMS_IMPORT,
   set: (value) => {
     if (value === false) {
       resetMessage()
     }
-    return modalStore.setModal(ModalNames.ITEMS_IMPORT_MODAL, value)
+    return modalStore.setModal(ModalNames.ITEMS_IMPORT, value)
   }
 })
 

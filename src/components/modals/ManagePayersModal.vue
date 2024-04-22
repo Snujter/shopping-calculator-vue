@@ -37,8 +37,8 @@ import IconDelete from '@/components/icons/IconDelete.vue'
 // handle opening /closing modal
 const modalsStore = useModalsStore()
 const isModalOpen = computed({
-  get: () => modalsStore.MANAGE_PAYERS_MODAL,
-  set: (value) => modalsStore.setModal(ModalNames.MANAGE_PAYERS_MODAL, value)
+  get: () => modalsStore[ModalNames.MANAGE_PAYERS],
+  set: (value) => modalsStore.setModal(ModalNames.MANAGE_PAYERS, value)
 })
 
 // handle updating payer names
