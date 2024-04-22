@@ -1,5 +1,5 @@
-export const DEFAULT_LOCALE = import.meta.env.VITE_DEFAULT_LOCALE || 'en-US'
-export const DEFAULT_CURRENCY = import.meta.env.VITE_DEFAULT_CURRENCY || 'USD'
+export const DEFAULT_LOCALE = import.meta.env.VITE_DEFAULT_LOCALE || 'en-GB'
+export const DEFAULT_CURRENCY = import.meta.env.VITE_DEFAULT_CURRENCY || 'GBP'
 
 export enum PaymentTypes {
   EQUAL = 1,
