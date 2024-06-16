@@ -2,7 +2,6 @@
  * Helper functions for various tasks like formatting currency, downloading CSV etc.
  */
 import { DEFAULT_LOCALE, DEFAULT_CURRENCY } from '@/globals'
-import type { Payment } from '@/interfaces'
 
 // formats number to currency
 export const formatPrice = (
@@ -18,44 +17,6 @@ export const formatPrice = (
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     })
-}
-
-// calculates how much each payer has to pay if everyone pays an equal amount
-export const calculateEqualPayments = (
-  totalPrice: number,
-  payments: PartialFields<Payment, 'payerId', 'isEqualPayer'>,
-): Record<number, number> => {
-  const result: Record<number, number> = {}
-  const payersCount = payments.filter(p => p.isEqualPayer).length
-  const pricePerPayer = totalPrice / payersCount
-  payments.forEach(payment => {
-    result[payment.payerId] = payment.isEqualPayer ? pricePerPayer : 0
-  })
-  return result
-}
-
-// calculates how much each payer has to pay if everyone is paying only for a given quantity
-export const calculateQuantityPayments = (
-  pricePerUnit: number,
-  payments: PartialFields<Payment, 'payerId', 'quantity'>,
-): Record<number, number> => {
-  const result: Record<number, number> = {}
-  payments.forEach(payment => {
-    result[payment.payerId] = payment.quantity * pricePerUnit
-  })
-  return result
-}
-
-// calculates how much each payer has to pay if everyone is paying only for a given percentage
-export const calculatePercentagePayments = (
-  totalPrice: number,
-  payments: PartialFields<Payment, 'payerId', 'percentage'>,
-): Record<number, number> => {
-  const result: Record<number, number> = {}
-  payments.forEach(payment => {
-    result[payment.payerId] = (payment.percentage / 100) * totalPrice
-  })
-  return result
 }
 
 // converts an array or object to CSV

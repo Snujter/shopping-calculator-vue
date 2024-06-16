@@ -97,17 +97,32 @@ export const useItemsStore = defineStore('items', {
           result[item.id] = {}
         }
 
+        const payments = item.paymentGroup.payments
+        const totalPayments: Record<Payer['id'], number> = {}
         switch (item.paymentGroup.type) {
-          case PaymentTypes.EQUAL:
-            result[item.id] = calculateEqualPayments(item.price, item.paymentGroup.payments)
+          case PaymentTypes.EQUAL: {
+            const payersCount = payments.filter(p => p.isEqualPayer).length
+            const pricePerPayer = payersCount > 0 ? item.price / payersCount : 0
+            payments.forEach(payment => {
+              totalPayments[payment.payerId] = payment.isEqualPayer ? pricePerPayer : 0
+            })
             break
-          case PaymentTypes.QUANTITY:
-            result[item.id] = calculateQuantityPayments(item.price / item.quantity, item.paymentGroup.payments)
+          }
+          case PaymentTypes.QUANTITY: {
+            const pricePerUnit = item.price / item.quantity
+            payments.forEach(payment => {
+              totalPayments[payment.payerId] = payment.quantity * pricePerUnit
+            })
             break
-          case PaymentTypes.PERCENTAGE:
-            result[item.id] = calculatePercentagePayments(item.price, item.paymentGroup.payments)
+          }
+          case PaymentTypes.PERCENTAGE: {
+            payments.forEach(payment => {
+              totalPayments[payment.payerId] = (payment.percentage / 100) * item.price
+            })
             break
+          }
         }
+        result[item.id] = totalPayments
       })
 
       return result
