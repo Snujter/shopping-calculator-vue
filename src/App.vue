@@ -12,6 +12,9 @@
   <ManagePayersModal />
   <main class='p-10 pl-24 w-screen h-screen'>
     <div class='w-full h-full overflow-auto'>
+      <div class='text-center text-white text-3xl mb-4'>
+        {{ deliveryDate }}
+      </div>
       <table class='mx-auto break-words'>
         <thead>
         <tr>
@@ -101,6 +104,7 @@ import TableFooter from '@/components/paymentTable/TableFooter.vue'
 // common stuff cache
 const commonStore = useCommonStore()
 const downloadFileName = computed(() => commonStore.getCsvDownloadFileName)
+const deliveryDate = computed(() => commonStore.deliveryDate)
 
 // items cache
 const itemsStore = useItemsStore()
