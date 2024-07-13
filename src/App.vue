@@ -83,7 +83,7 @@
 
 <script setup lang='ts'>
 import { computed } from 'vue'
-import { Item, Payer, Payment } from '@/interfaces'
+import type { Item, Payer, Payment } from '@/interfaces'
 import { useCommonStore } from '@/store/commonStore'
 import { useItemsStore } from '@/store/itemsStore'
 import { usePayersStore } from '@/store/payersStore'

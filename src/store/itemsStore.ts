@@ -1,7 +1,6 @@
 import type { Item, Payer, Payment, PaymentGroup } from '@/interfaces'
 import { defineStore } from 'pinia'
 import { PaymentTypes } from '@/globals'
-import { calculateEqualPayments, calculatePercentagePayments, calculateQuantityPayments } from '@/helpers'
 
 interface State {
   items: Item[],
@@ -29,6 +28,10 @@ export const useItemsStore = defineStore('items', {
     // updates a payment group inside an item
     _updateItemPaymentGroup(itemId: Item['id'], payload: Partial<PaymentGroup>) {
       const item = this.items.find((item: Item) => item.id === itemId)
+      if (!item) {
+        return
+      }
+
       const newPaymentGroup = {
         paymentGroup: {
           ...item.paymentGroup,
@@ -41,9 +44,14 @@ export const useItemsStore = defineStore('items', {
     // updates a payment inside a payment group
     _setPaymentInGroup(itemId: Item['id'], payerId: Payer['id'], updatedPayment: Partial<Payment>) {
       const item = this.items.find((item: Item) => item.id === itemId)
+      if (!item) {
+        return
+      }
+
       const newPayments = item.paymentGroup.payments.map((payment: Payment) => (
         payment.payerId === payerId ? { ...payment, ...updatedPayment } : payment
       ))
+
       this._updateItemPaymentGroup(itemId, { payments: newPayments })
     },
     // updates the payment type for an item
@@ -71,7 +79,7 @@ export const useItemsStore = defineStore('items', {
           percentage: 0
         }
 
-        this._updateItemPaymentGroup(item.id, { payments: { ...item.paymentGroup.payments, newPayment } })
+        this._updateItemPaymentGroup(item.id, { payments: [ ...item.paymentGroup.payments, newPayment ] })
       })
     },
     deletePayerFromItems(payerId: Payer['id']) {
@@ -80,7 +88,7 @@ export const useItemsStore = defineStore('items', {
         const filteredPayments = item.paymentGroup.payments.filter(
           (payment: Payment) => payment.payerId !== payerId
         )
-        this._updateItemPaymentGroup(item.id, { payments: { filteredPayments } })
+        this._updateItemPaymentGroup(item.id, { payments: filteredPayments })
       })
     }
   },
@@ -133,7 +141,7 @@ export const useItemsStore = defineStore('items', {
       const result: { [itemId: Item['id']]: number } = {}
 
       for (const itemId in this.paymentsMatrix) {
-        result[itemId] = Object.values(this.paymentsMatrix[itemId]).reduce((acc: number, curr: PaymentsMatrixInterface[Item['id']]) => acc + curr, 0)
+        result[itemId] = Object.values(this.paymentsMatrix[itemId]).reduce((acc: number, curr: number) => acc + curr, 0)
       }
 
       return result
@@ -141,7 +149,7 @@ export const useItemsStore = defineStore('items', {
 
     // total of payments made for each payer
     payerTotalPayments(): { [payerId: Payer['id']]: number } {
-      const totals = {}
+      const totals: { [payerId: Payer['id']]: number } = {}
 
       this.items.forEach(item => {
         const itemPayments = item.paymentGroup.payments

@@ -13,11 +13,11 @@
     >
       <!-- selected item icon -->
       <component
-        :is='selectedItem.icon'
+        :is='(selectedItem && selectedItem.icon) || ""'
         class='group-active:bg-accent transition-all mr-4 p-1 rounded-full fill-text'
         :class='[isOpen ? "bg-accent" : "bg-outline"]' />
       <!-- selected item label -->
-      <span class='mr-4'>{{ selectedItem.label }}</span>
+      <span class='mr-4'>{{ (selectedItem && selectedItem.label) || "" }}</span>
       <!-- dropdown arrow -->
       <IconArrow
         class='group-active:stroke-accent transition-all ml-auto'
@@ -99,7 +99,7 @@ const handleSelectedItem = (newValue: DropdownItem['value']): true => {
 }
 
 /* computed */
-const selectedItem = computed((): DropdownItem => {
+const selectedItem = computed((): DropdownItem | undefined => {
   return props.items.find((item) => item.value === props.modelValue)
 })
 </script>

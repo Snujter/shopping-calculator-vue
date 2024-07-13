@@ -1,17 +1,17 @@
-import { PiniaPluginContext } from 'pinia'
+import type { PiniaPlugin, PiniaPluginContext } from 'pinia'
 
 export interface PersistConfig {
   [actionName: string]: string[]
 }
 
 // plugin for saving specific parts of the state of a store to localStorage
-export function createLocalStoragePlugin() {
+export function createLocalStoragePlugin(): PiniaPlugin {
   return (context: PiniaPluginContext) => {
     const { store, options } = context
 
     // save specific parts of the state to localStorage
-    const saveSelectedState = (selectedStateKeys) => {
-      const stateToPersist = selectedStateKeys.reduce((acc, key) => {
+    const saveSelectedState = (selectedStateKeys: string[]) => {
+      const stateToPersist = selectedStateKeys.reduce((acc: Record<string, any>, key: string) => {
         acc[key] = store.$state[key]
         return acc
       }, {} as Partial<typeof store.$state>)
@@ -32,12 +32,12 @@ export function createLocalStoragePlugin() {
     }
 
     // subscribe to actions to save state
-    if (options.persistConfig) {
+    if ((options as any).persistConfig) {
       // load state when the store is initialized
       loadState()
 
       store.$onAction(({ name, after }) => {
-        const selectedStateKeys = options.persistConfig[name]
+        const selectedStateKeys = (options as any).persistConfig[name]
         if (selectedStateKeys) {
           after(() => saveSelectedState(selectedStateKeys))
         }
@@ -45,4 +45,3 @@ export function createLocalStoragePlugin() {
     }
   }
 }
-

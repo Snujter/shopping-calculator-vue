@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang='ts'>
-import { PropType, DefineComponent } from 'vue'
+import type { PropType, DefineComponent } from 'vue'
 
 defineProps({
   menuGroups: {
